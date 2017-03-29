@@ -15,6 +15,10 @@
 		},
 
 		onClick: function (e) {
+			// Round x and y to the closest grid panel (closest 20)
+			e.x = Math.round(e.x / 20) * 20;
+			e.y = Math.round(e.y / 20) * 20;
+
 			if (null === this.startPoint) {
 				// Set start point
 				this.startPoint = e;
