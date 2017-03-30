@@ -32,7 +32,7 @@
 			}
 
 			this.endPoint = e;
-			EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_BOX, {
+			EventHandler.emit(EventHandler.MODULE_VIEW_GENERATE_RECT, {
 				start: this.startPoint,
 				end: this.endPoint
 			});

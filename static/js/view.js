@@ -7,8 +7,6 @@
 			activeRectId: 'activeRect'
 		},
 
-		rects: [],
-
 		$svg: null,
 
 		initSVG: function () {
@@ -42,38 +40,26 @@
 				height: 1
 			},
 				point = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-
+			point.classList.add('tmp-point');
 			point.setAttributeNS(null, 'x', p.x);
 			point.setAttributeNS(null, 'y', p.y);
 			point.setAttributeNS(null, 'height', p.height);
 			point.setAttributeNS(null, 'width', p.width);
 			point.setAttributeNS(null, 'fill', 'purple');
 			this.$svg.appendChild(point);
+			// TODO Remove tmp-points
 		},
 
-		generateBox: function (event) {
-			// Get starting and ending points (x,y)
-			var r = {
-				x: event.start.x,
-				y: event.start.y,
-				width: event.end.x - event.start.x,
-				height: event.end.y - event.start.y
-			};
-			this.rects.push(r);
-
-			this.redrawRects();
-		},
-
-		redrawRects: function () {
-			this.rects.forEach(function (r) {
-				var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-				rect.setAttributeNS(null, 'x', r.x);
-				rect.setAttributeNS(null, 'y', r.y);
-				rect.setAttributeNS(null, 'height', r.height);
-				rect.setAttributeNS(null, 'width', r.width);
-				rect.setAttributeNS(null, 'fill', 'grey');
-				this.$svg.appendChild(rect);
-			}, this);
+		generateBox: function (r) {
+			// TODO: Check validity of event
+			var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+			rect.id = r.id;
+			rect.setAttributeNS(null, 'x', r.x);
+			rect.setAttributeNS(null, 'y', r.y);
+			rect.setAttributeNS(null, 'height', r.height);
+			rect.setAttributeNS(null, 'width', r.width);
+			rect.setAttributeNS(null, 'fill', 'grey');
+			this.$svg.appendChild(rect);
 		},
 
 		init: function () {

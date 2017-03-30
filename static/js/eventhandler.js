@@ -4,6 +4,8 @@ var EventHandler = {
 	VIEW_GRID_GENERATE_BOX: 'view_grid_generate_box',
 	VIEW_GRID_GENERATE_POINT: 'view_grid_generate_point',
 
+	MODULE_VIEW_GENERATE_RECT: 'module_view_generate_rect',
+
 	// Event mapping
 	handlers: [],
 
