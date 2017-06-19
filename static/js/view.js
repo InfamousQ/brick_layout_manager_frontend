@@ -4,17 +4,19 @@
 	var View = {
 		settings: {
 			svgElement: 'snap',
-			activeRectId: 'activeRect'
+			activeRectId: 'activeRect',
+            bgRectId: 'background-rect'
 		},
 
 		$svg: null,
+        $bgrect: null,
 
 		initSVG: function () {
 			//var grid_block = this.snap.rect(0,0, 10,10).attr({fill:'none', stroke:'#ccc'}).pattern(0,0, 10,10);
 			//var grid = this.snap.rect(0,0, '100%','100%').attr({fill: grid_block});
 		},
 
-		bindEvents: function () {
+		bindEvents: function() {
 			this.$svg.onclick = this.clickToEditor.bind(this);
 
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_BOX, View.generateBox.bind(this));
@@ -22,10 +24,11 @@
 		},
 
 		clickToEditor: function (event) {
-			// Find click position in grid
-			var point = {
-					x: event.offsetX,
-					y: event.offsetY
+			// First, Find the ancestor "background-rect" element
+            var r = this.$bgrect.getBoundingClientRect(),
+                point = {
+					x: event.clientX - r.left,
+					y: event.clientY - r.top
 				};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_CLICK, point);
@@ -64,6 +67,7 @@
 
 		init: function () {
 			this.$svg = document.getElementById(this.settings.svgElement);
+            this.$bgrect = document.getElementById(this.settings.bgRectId);
 			this.initSVG();
 			this.bindEvents();
 		}
