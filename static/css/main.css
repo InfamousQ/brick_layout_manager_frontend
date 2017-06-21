@@ -1,8 +1,9 @@
-@import url('navbar.css')
-@import url('view.css');
-@import url('module.css');
-@import url('project.css');
-
-body {
-    background-color:aquamarine;
-}
+/* Note: This file should only contain @imports. */
+/* First, files that handle positioning elements */
+@import url('layout/landscape.css') all and (orientation: landscape);
+@import url('layout/portrait.css') all and (orientation: portrait);
+/* Then, files that handle look of individual elements */
+@import url('elements/navbar.css');
+@import url('elements/view.css');
+@import url('elements/module.css');
+@import url('elements/project.css');
