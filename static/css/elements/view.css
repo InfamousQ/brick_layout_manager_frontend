@@ -1,3 +1,9 @@
 #view {
     background-color: gainsboro;
 }
+
+#snap {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

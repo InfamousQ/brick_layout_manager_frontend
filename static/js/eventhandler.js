@@ -6,6 +6,7 @@ var EventHandler = {
 
 	MODULE_VIEW_GENERATE_RECT: 'module_view_generate_rect',
 
+	PROJECT_CHANGE_SETTINGS: 'project_change_settings',
 	// Event mapping
 	handlers: [],
 

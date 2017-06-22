@@ -21,6 +21,7 @@
 
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_BOX, View.generateBox.bind(this));
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_POINT, View.generatePoint.bind(this));
+			EventHandler.listen(EventHandler.PROJECT_CHANGE_SETTINGS, View.readSettings.bind(this));
 		},
 
 		clickToEditor: function (event) {
@@ -63,6 +64,18 @@
 			rect.setAttributeNS(null, 'width', r.width);
 			rect.setAttributeNS(null, 'fill', 'grey');
 			this.$svg.appendChild(rect);
+		},
+
+		readSettings: function(event) {
+			// Change bgrect according to the size defined in settings
+			var newHeight = event.heightInBricks * 10,
+					newWidth = event.widthInBricks * 10;
+
+			this.$svg.setAttribute('height', newHeight);
+			this.$svg.setAttribute('width', newWidth);
+			this.$bgrect.setAttribute('height', newHeight);
+			this.$bgrect.setAttribute('width', newWidth);
+			// TODO: This must clip other rects!
 		},
 
 		init: function () {
