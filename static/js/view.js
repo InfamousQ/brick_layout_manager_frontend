@@ -36,12 +36,12 @@
 		},
 
 		generatePoint: function (event) {
-			// Generate single point (1px sized rectangle with class "point")
+			// Generate single point ("brick" sized rectangle with class "point")
 			var p = {
 				x: event.x,
 				y: event.y,
-				width: 1,
-				height: 1
+				width: Globals.BRICKSIZE,
+				height: Globals.BRICKSIZE
 			},
 				point = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
 			point.classList.add('tmp-point');
@@ -68,8 +68,8 @@
 
 		readSettings: function(event) {
 			// Change bgrect according to the size defined in settings
-			var newHeight = event.heightInBricks * 10,
-					newWidth = event.widthInBricks * 10;
+			var newHeight = event.heightInBricks * Globals.BRICKSIZE,
+					newWidth = event.widthInBricks * Globals.BRICKSIZE;
 
 			this.$svg.setAttribute('height', newHeight);
 			this.$svg.setAttribute('width', newWidth);

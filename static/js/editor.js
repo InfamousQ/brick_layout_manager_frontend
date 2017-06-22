@@ -1,4 +1,4 @@
-/*global EventHandler */
+/*global EventHandler, Globals */
 (function () {
 	"use strict";
 	var Editor = {
@@ -15,9 +15,9 @@
 		},
 
 		onClick: function (e) {
-			// Round x and y to the closest grid panel (closest 20)
-			e.x = Math.round(e.x / 20) * 20;
-			e.y = Math.round(e.y / 20) * 20;
+			// Round x and y to the closest grid panel
+			e.x = Math.round(e.x / Globals.BRICKSIZE) * Globals.BRICKSIZE;
+			e.y = Math.round(e.y / Globals.BRICKSIZE) * Globals.BRICKSIZE;
 
 			if (null === this.startPoint) {
 				// Set start point

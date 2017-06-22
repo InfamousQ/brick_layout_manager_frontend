@@ -37,10 +37,10 @@
 			var li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
 			li.classList.remove('skeleton');
 			li.getElementsByClassName('id')[0].textContent = r.id;
-			li.getElementsByClassName('x')[0].textContent = r.x;
-			li.getElementsByClassName('y')[0].textContent = r.y;
-			li.getElementsByClassName('w')[0].textContent = r.width;
-			li.getElementsByClassName('h')[0].textContent = r.height;
+			li.getElementsByClassName('x')[0].textContent = (r.x / Globals.BRICKSIZE);
+			li.getElementsByClassName('y')[0].textContent = (r.y / Globals.BRICKSIZE);
+			li.getElementsByClassName('w')[0].textContent = (r.width / Globals.BRICKSIZE);
+			li.getElementsByClassName('h')[0].textContent = (r.height / Globals.BRICKSIZE);
 			this.$modulelist.appendChild(li);
 
 			EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_BOX, r);
