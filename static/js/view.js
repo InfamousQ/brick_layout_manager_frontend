@@ -18,6 +18,9 @@
 
 		bindEvents: function() {
 			this.$svg.onclick = this.clickToEditor.bind(this);
+			this.$svg.onmouseover = this.mouseInEditor.bind(this);
+			this.$svg.onmousemove = this.mouseMoveEditor.bind(this);
+			this.$svg.onmouseout = this.mouseOutEditor.bind(this);
 
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_BOX, View.generateBox.bind(this));
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_POINT, View.generatePoint.bind(this));
@@ -64,6 +67,36 @@
 			rect.setAttributeNS(null, 'width', r.width);
 			rect.setAttributeNS(null, 'fill', 'grey');
 			this.$svg.appendChild(rect);
+		},
+
+		mouseInEditor: function (event) {
+      var r = this.$bgrect.getBoundingClientRect(),
+          point = {
+						x: event.clientX - r.left,
+						y: event.clientY - r.top
+					};
+
+			EventHandler.emit(EventHandler.VIEW_GRID_MOUSE_IN, point);
+		},
+
+		mouseMoveEditor: function (event) {
+      var r = this.$bgrect.getBoundingClientRect(),
+        point = {
+					x: event.clientX - r.left,
+					y: event.clientY - r.top
+				};
+
+			EventHandler.emit(EventHandler.VIEW_GRID_MOUSE_MOVE, point);
+		},
+
+		mouseOutEditor: function (event) {
+			var r = this.$bgrect.getBoundingClientRect(),
+        point = {
+					x: event.clientX - r.left,
+					y: event.clientY - r.top
+				};
+
+			EventHandler.emit(EventHandler.VIEW_GRID_MOUSE_OUT, point);
 		},
 
 		readSettings: function(event) {

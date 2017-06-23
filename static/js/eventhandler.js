@@ -1,5 +1,8 @@
 var EventHandler = {
 	// Event types
+	VIEW_GRID_MOUSE_IN: 'view_grid_mouse_in',
+	VIEW_GRID_MOUSE_MOVE: 'view_grid_mouse_move',
+	VIEW_GRID_MOUSE_OUT: 'view_grid_mouse_out',
 	VIEW_GRID_CLICK: 'view_grid_click',
 	VIEW_GRID_GENERATE_BOX: 'view_grid_generate_box',
 	VIEW_GRID_GENERATE_POINT: 'view_grid_generate_point',
