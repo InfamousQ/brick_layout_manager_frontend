@@ -5,11 +5,11 @@
 		settings: {
 			svgElement: 'snap',
 			activeRectId: 'activeRect',
-            bgRectId: 'background-rect'
+			bgRectId: 'background-rect'
 		},
 
 		$svg: null,
-        $bgrect: null,
+		$bgrect: null,
 
 		initSVG: function () {
 			//var grid_block = this.snap.rect(0,0, 10,10).attr({fill:'none', stroke:'#ccc'}).pattern(0,0, 10,10);
@@ -29,10 +29,10 @@
 
 		clickToEditor: function (event) {
 			// First, Find the ancestor "background-rect" element
-            var r = this.$bgrect.getBoundingClientRect(),
-                point = {
-					x: event.clientX - r.left,
-					y: event.clientY - r.top
+			var r = this.$bgrect.getBoundingClientRect(),
+					point = {
+						x: event.clientX - r.left,
+						y: event.clientY - r.top
 				};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_CLICK, point);
@@ -70,8 +70,8 @@
 		},
 
 		mouseInEditor: function (event) {
-      var r = this.$bgrect.getBoundingClientRect(),
-          point = {
+			var r = this.$bgrect.getBoundingClientRect(),
+					point = {
 						x: event.clientX - r.left,
 						y: event.clientY - r.top
 					};
@@ -80,21 +80,21 @@
 		},
 
 		mouseMoveEditor: function (event) {
-      var r = this.$bgrect.getBoundingClientRect(),
-        point = {
-					x: event.clientX - r.left,
-					y: event.clientY - r.top
-				};
+			var r = this.$bgrect.getBoundingClientRect(),
+					point = {
+						x: event.clientX - r.left,
+						y: event.clientY - r.top
+					};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_MOUSE_MOVE, point);
 		},
 
 		mouseOutEditor: function (event) {
 			var r = this.$bgrect.getBoundingClientRect(),
-        point = {
-					x: event.clientX - r.left,
-					y: event.clientY - r.top
-				};
+					point = {
+						x: event.clientX - r.left,
+						y: event.clientY - r.top
+					};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_MOUSE_OUT, point);
 		},
@@ -113,7 +113,7 @@
 
 		init: function () {
 			this.$svg = document.getElementById(this.settings.svgElement);
-            this.$bgrect = document.getElementById(this.settings.bgRectId);
+			this.$bgrect = document.getElementById(this.settings.bgRectId);
 			this.initSVG();
 			this.bindEvents();
 		}

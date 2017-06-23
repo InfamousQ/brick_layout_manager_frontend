@@ -1,11 +1,11 @@
 #view {
-    background-color: gainsboro;
+	background-color: gainsboro;
 }
 
 #snap {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #hover-rect {

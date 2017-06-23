@@ -1,4 +1,4 @@
-/*global EventHandler */
+/*global EventHandler, Globals */
 (function () {
 	"use strict";
 	var Module = {
@@ -29,12 +29,12 @@
 				y: data.start.y,
 				width: data.end.x - data.start.x,
 				height: data.end.y - data.start.y
-			};
+			},
+				li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
 			this.rects.push(r);
 
 			// Generate graphical representations of the rect. One to module, one to view.
 			// Copy skeleton li, fill points and then add to ul
-			var li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
 			li.classList.remove('skeleton');
 			li.getElementsByClassName('id')[0].textContent = r.id;
 			li.getElementsByClassName('x')[0].textContent = (r.x / Globals.BRICKSIZE);

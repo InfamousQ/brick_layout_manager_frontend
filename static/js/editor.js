@@ -53,7 +53,7 @@
 		},
 
 		onMouseMove: function (e) {
-			// Round x and y to the closest grid panel
+			// Round x and y to the closest grid panelATUR
 			e.x = this.inBricks(e.x);
 			e.y = this.inBricks(e.y);
 			this.$hoverrect.setAttribute('x', e.x);
