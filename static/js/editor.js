@@ -53,9 +53,15 @@
 		},
 
 		onMouseMove: function (e) {
-			// Round x and y to the closest grid panelATUR
-			e.x = this.inBricks(e.x);
-			e.y = this.inBricks(e.y);
+			// Round x and y to the closest grid panel
+			// If startPoint has not been set (initial state), rect should be on the bottom right grid point from mouse. If startPoint is set, rect should be on top left grid point from mouse
+			if (null !== this.startPoint) {
+				e.x = this.inBricks(e.x) - Globals.BRICKSIZE;
+				e.y = this.inBricks(e.y) - Globals.BRICKSIZE;
+			} else {
+				e.x = this.inBricks(e.x);
+				e.y = this.inBricks(e.y);
+			}
 			this.$hoverrect.setAttribute('x', e.x);
 			this.$hoverrect.setAttribute('y', e.y);
 		},
