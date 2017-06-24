@@ -1,3 +1,27 @@
 #module {
 	background-color: bisque;
 }
+
+.color-black {
+	background-color: #05131D;
+}
+
+.color-blue {
+	background-color: #0055BF;
+}
+
+.color-light-grey {
+	background-color: #9BA19D;
+}
+
+.color-light-blue-grey {
+	background-color: #A0A5A9;
+}
+
+.color-dark-blue-grey {
+	background-color: #6C6E68;
+}
+
+.color-green {
+	background-color: #237841;
+}
