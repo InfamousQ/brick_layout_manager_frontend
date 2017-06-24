@@ -6,6 +6,7 @@ var EventHandler = {
 	VIEW_GRID_CLICK: 'view_grid_click',
 	VIEW_GRID_GENERATE_BOX: 'view_grid_generate_box',
 	VIEW_GRID_GENERATE_POINT: 'view_grid_generate_point',
+	VIEW_GRID_EDIT_RECT: 'module_view_edit_rect',
 
 	MODULE_VIEW_GENERATE_RECT: 'module_view_generate_rect',
 

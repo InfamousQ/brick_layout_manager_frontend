@@ -24,6 +24,7 @@
 
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_BOX, View.generateBox.bind(this));
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_POINT, View.generatePoint.bind(this));
+			EventHandler.listen(EventHandler.VIEW_GRID_EDIT_RECT, View.editBox.bind(this));
 			EventHandler.listen(EventHandler.PROJECT_CHANGE_SETTINGS, View.readSettings.bind(this));
 		},
 
@@ -67,6 +68,16 @@
 			rect.setAttributeNS(null, 'width', r.width);
 			rect.setAttributeNS(null, 'fill', 'grey');
 			this.$svg.appendChild(rect);
+		},
+
+		editBox: function (r) {
+			// TODO: Check validity of event
+			var rect = document.getElementById(r.id);
+			rect.setAttributeNS(null, 'x', r.x);
+			rect.setAttributeNS(null, 'y', r.y);
+			rect.setAttributeNS(null, 'height', r.height);
+			rect.setAttributeNS(null, 'width', r.width);
+			rect.setAttributeNS(null, 'fill', 'grey');
 		},
 
 		mouseInEditor: function (event) {
