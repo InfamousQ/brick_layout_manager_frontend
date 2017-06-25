@@ -66,7 +66,7 @@
 			rect.setAttributeNS(null, 'y', r.y);
 			rect.setAttributeNS(null, 'height', r.height);
 			rect.setAttributeNS(null, 'width', r.width);
-			rect.setAttributeNS(null, 'fill', 'grey');
+			rect.setAttributeNS(null, 'fill', r.color);
 			this.$svg.appendChild(rect);
 		},
 
@@ -77,7 +77,7 @@
 			rect.setAttributeNS(null, 'y', r.y);
 			rect.setAttributeNS(null, 'height', r.height);
 			rect.setAttributeNS(null, 'width', r.width);
-			rect.setAttributeNS(null, 'fill', 'grey');
+			rect.setAttributeNS(null, 'fill', r.color);
 		},
 
 		mouseInEditor: function (event) {
