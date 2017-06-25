@@ -50,6 +50,7 @@
 			li.getElementsByClassName('y')[0].textContent = r.y;
 			li.getElementsByClassName('w')[0].textContent = r.width;
 			li.getElementsByClassName('h')[0].textContent = r.height;
+			li.getElementsByClassName('show-edit-module-form')[0].onclick = this.toggleEditForm.bind(this);
 			// Form for editing the rects
 			li.getElementsByClassName('id')[1].textContent = r.id;
 			li.getElementsByClassName('input-x')[0].value = br.x;
@@ -90,6 +91,19 @@
 				};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_EDIT_RECT, r);
+		},
+
+		toggleEditForm: function (e) {
+			var f = null,
+				li = null;
+			// if event's target's tag is span, a is the parent;
+			if (e.target.tagName === 'SPAN') {
+				li = e.target.parentElement.parentElement;
+			} else {
+				li= e.target.parentElement;
+			}
+			f = li.getElementsByClassName('edit-module-form')[0];
+			f.style.display = ('block' === f.style.display) ? 'none' : 'block';
 		},
 
 		init: function () {

@@ -1,3 +1,11 @@
 #module {
 	background-color: bisque;
 }
+
+.skeleton {
+	display:none;
+}
+
+.edit-module-form {
+	display: none;
+}
