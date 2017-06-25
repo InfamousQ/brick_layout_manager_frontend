@@ -1,4 +1,4 @@
-/*global EventHandler */
+/*global EventHandler, Globals */
 (function () {
 	"use strict";
 	var View = {
@@ -16,7 +16,7 @@
 			//var grid = this.snap.rect(0,0, '100%','100%').attr({fill: grid_block});
 		},
 
-		bindEvents: function() {
+		bindEvents: function () {
 			this.$svg.onclick = this.clickToEditor.bind(this);
 			this.$svg.onmouseover = this.mouseInEditor.bind(this);
 			this.$svg.onmousemove = this.mouseMoveEditor.bind(this);
@@ -31,9 +31,9 @@
 		clickToEditor: function (event) {
 			// First, Find the ancestor "background-rect" element
 			var r = this.$bgrect.getBoundingClientRect(),
-					point = {
-						x: event.clientX - r.left,
-						y: event.clientY - r.top
+				point = {
+					x: event.clientX - r.left,
+					y: event.clientY - r.top
 				};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_CLICK, point);
@@ -82,38 +82,38 @@
 
 		mouseInEditor: function (event) {
 			var r = this.$bgrect.getBoundingClientRect(),
-					point = {
-						x: event.clientX - r.left,
-						y: event.clientY - r.top
-					};
+				point = {
+					x: event.clientX - r.left,
+					y: event.clientY - r.top
+				};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_MOUSE_IN, point);
 		},
 
 		mouseMoveEditor: function (event) {
 			var r = this.$bgrect.getBoundingClientRect(),
-					point = {
-						x: event.clientX - r.left,
-						y: event.clientY - r.top
-					};
+				point = {
+					x: event.clientX - r.left,
+					y: event.clientY - r.top
+				};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_MOUSE_MOVE, point);
 		},
 
 		mouseOutEditor: function (event) {
 			var r = this.$bgrect.getBoundingClientRect(),
-					point = {
-						x: event.clientX - r.left,
-						y: event.clientY - r.top
-					};
+				point = {
+					x: event.clientX - r.left,
+					y: event.clientY - r.top
+				};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_MOUSE_OUT, point);
 		},
 
-		readSettings: function(event) {
+		readSettings: function (event) {
 			// Change bgrect according to the size defined in settings
 			var newHeight = event.heightInBricks * Globals.BRICKSIZE,
-					newWidth = event.widthInBricks * Globals.BRICKSIZE;
+				newWidth = event.widthInBricks * Globals.BRICKSIZE;
 
 			this.$svg.setAttribute('height', newHeight);
 			this.$svg.setAttribute('width', newWidth);
