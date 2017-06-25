@@ -28,14 +28,16 @@
 				x: data.start.x,
 				y: data.start.y,
 				width: data.end.x - data.start.x,
-				height: data.end.y - data.start.y
+				height: data.end.y - data.start.y,
+				color: Globals.COLORS.default
 			},
 			// Initialize "module" with dimensions in studs
 				br = {
 					x: r.x / Globals.BRICKSIZE,
 					y: r.y / Globals.BRICKSIZE,
 					width: r.width / Globals.BRICKSIZE,
-					height: r.height / Globals.BRICKSIZE
+					height: r.height / Globals.BRICKSIZE,
+					color: Globals.COLORS.default // Default color
 				},
 				li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
 			this.rects.push(br);
@@ -83,7 +85,8 @@
 					x: f.getElementsByClassName('input-x')[0].value * Globals.BRICKSIZE,
 					y: f.getElementsByClassName('input-y')[0].value * Globals.BRICKSIZE,
 					height: f.getElementsByClassName('input-height')[0].value * Globals.BRICKSIZE,
-					width: f.getElementsByClassName('input-width')[0].value * Globals.BRICKSIZE
+					width: f.getElementsByClassName('input-width')[0].value * Globals.BRICKSIZE,
+					color: f.getElementsByClassName('input-color')[0].value
 				};
 
 			EventHandler.emit(EventHandler.VIEW_GRID_EDIT_RECT, r);
@@ -93,6 +96,18 @@
 			this.$module = document.getElementById(this.settings.moduleElement);
 			this.$modulelist = document.getElementById(this.settings.modulelistElement);
 			this.bindEvents();
+			this.populateColorSelect();
+		},
+
+		populateColorSelect: function () {
+			// Populate input-color select element with hard-coded values from Globals.COLORS global
+			var color_select = document.getElementsByClassName('input-color')[0];
+			for (const c in Globals.COLORS) {
+				var opt = document.createElement('option');
+				opt.value = Globals.COLORS[c];
+				opt.innerHTML = c;
+				color_select.appendChild(opt);
+			}
 		}
 	};
 	Module.init();
