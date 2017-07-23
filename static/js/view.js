@@ -55,12 +55,12 @@
 			point.setAttributeNS(null, 'width', p.width);
 			point.setAttributeNS(null, 'fill', 'purple');
 			this.$svg.appendChild(point);
-			// TODO Remove tmp-points
 		},
 
 		generateBox: function (r) {
 			// TODO: Check validity of event
-			var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+			var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect'),
+					tmp_points = document.getElementsByClassName('tmp-point');
 			rect.id = r.id;
 			rect.setAttributeNS(null, 'x', r.x);
 			rect.setAttributeNS(null, 'y', r.y);
@@ -68,6 +68,11 @@
 			rect.setAttributeNS(null, 'width', r.width);
 			rect.setAttributeNS(null, 'fill', r.color);
 			this.$svg.appendChild(rect);
+
+			// Remove temporary points
+			while(tmp_points.length > 0) {
+				tmp_points[0].parentElement.removeChild(tmp_points[0]);
+			}
 		},
 
 		editBox: function (r) {
