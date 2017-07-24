@@ -23,9 +23,9 @@
 			this.$svg.onmousemove = this.mouseMoveEditor.bind(this);
 			this.$svg.onmouseout = this.mouseOutEditor.bind(this);
 
-			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_BOX, View.generateBox.bind(this));
+			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_PLATE, View.generateBox.bind(this));
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_POINT, View.generatePoint.bind(this));
-			EventHandler.listen(EventHandler.VIEW_GRID_EDIT_RECT, View.editBox.bind(this));
+			EventHandler.listen(EventHandler.MODULE_VIEW_EDIT_PLATE, View.editPlate.bind(this));
 			EventHandler.listen(EventHandler.PROJECT_CHANGE_SETTINGS, View.readSettings.bind(this));
 		},
 
@@ -58,10 +58,11 @@
 			this.$svg.appendChild(point);
 		},
 
-		generateBox: function (r) {
+		generateBox: function (plate) {
 			// TODO: Check validity of event
 			var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect'),
-					tmp_points = document.getElementsByClassName('tmp-point');
+					tmp_points = document.getElementsByClassName('tmp-point'),
+					r = plate.toRect();
 			rect.id = r.id;
 			rect.setAttributeNS(null, 'x', r.x);
 			rect.setAttributeNS(null, 'y', r.y);
@@ -76,9 +77,10 @@
 			}
 		},
 
-		editBox: function (r) {
+		editPlate: function (plate) {
 			// TODO: Check validity of event
-			var rect = document.getElementById(r.id);
+			var rect = document.getElementById(plate.id),
+				r = plate.toRect();
 			rect.setAttributeNS(null, 'x', r.x);
 			rect.setAttributeNS(null, 'y', r.y);
 			rect.setAttributeNS(null, 'height', r.height);

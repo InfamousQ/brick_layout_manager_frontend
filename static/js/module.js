@@ -1,5 +1,5 @@
-/*jshint browser: true*/
-/*global EventHandler, Globals */
+/*jshint browser: true, esversion: 6*/
+/*global EventHandler, Globals, Plate */
 (function () {
 	"use strict";
 	var Module = {
@@ -8,61 +8,60 @@
 			modulelistElement: 'module-list'
 		},
 
-		// Contains dimensions of each rect. Index in array is regarded as id of rect. 
+		// Contains SVG Rect representations of Plates. Index is id of representative plate in this.plates.
 		rects: [],
+		// Contains Plates. Index is id of plate
+		plates: [],
 
 		$module: null,
 
 		bindEvents: function () {
-			EventHandler.listen(EventHandler.MODULE_VIEW_GENERATE_RECT, Module.generateRect.bind(this));
+			EventHandler.listen(EventHandler.MODULE_VIEW_GENERATE_PLATE, Module.generatePlate.bind(this));
 		},
 
-		generateRect: function (data) {
+		generatePlate: function (data) {
 			// Ensure data is valid
 			if (!this.isRectDataValid(data)) {
 				return false;
 			}
 
 			// Initialize r as drawn rect
-			var r = {
-				id: this.rects.length + 1,
+			var plate = Plate.fromRect({
+				id: this.plates.length + 1,
 				x: data.start.x,
 				y: data.start.y,
 				width: data.end.x - data.start.x,
 				height: data.end.y - data.start.y,
 				color: Globals.COLORS.default
-			},
-			// Initialize "module" with dimensions in studs
-				br = {
-					x: r.x / Globals.BRICKSIZE,
-					y: r.y / Globals.BRICKSIZE,
-					width: r.width / Globals.BRICKSIZE,
-					height: r.height / Globals.BRICKSIZE,
-					color: Globals.COLORS.default // Default color
-				},
-				li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
-			this.rects.push(br);
+			});
+			if (null === plate) {
+				// Something went wrong! TODO: error log
+				return false;
+			}
+			var li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
+
+			this.plates.splice(plate.id, 0, plate);
 
 			// Generate graphical representations of the rect. One to module, one to view.
 			// Copy skeleton li, fill points and then add to ul
 			li.classList.remove('skeleton');
-			li.getElementsByClassName('id')[0].textContent = r.id;
-			li.getElementsByClassName('x')[0].textContent = r.x;
-			li.getElementsByClassName('y')[0].textContent = r.y;
-			li.getElementsByClassName('w')[0].textContent = r.width;
-			li.getElementsByClassName('h')[0].textContent = r.height;
+			li.getElementsByClassName('id')[0].textContent = plate.id;
+			li.getElementsByClassName('x')[0].textContent = plate.x;
+			li.getElementsByClassName('y')[0].textContent = plate.y;
+			li.getElementsByClassName('w')[0].textContent = plate.width;
+			li.getElementsByClassName('h')[0].textContent = plate.height;
 			li.getElementsByClassName('show-edit-module-form')[0].onclick = this.toggleEditForm.bind(this);
-			// Form for editing the rects
-			li.getElementsByClassName('id')[1].textContent = r.id;
-			li.getElementsByClassName('input-x')[0].value = br.x;
-			li.getElementsByClassName('input-y')[0].value = br.y;
-			li.getElementsByClassName('input-height')[0].value = br.height;
-			li.getElementsByClassName('input-width')[0].value = br.width;
+			// Form for editing the plates
+			li.getElementsByClassName('id')[1].textContent = plate.id;
+			li.getElementsByClassName('input-x')[0].value = plate.x;
+			li.getElementsByClassName('input-y')[0].value = plate.y;
+			li.getElementsByClassName('input-height')[0].value = plate.height;
+			li.getElementsByClassName('input-width')[0].value = plate.width;
 			this.$modulelist.appendChild(li);
 			// Note: Add event to dynamically created form
 			li.getElementsByClassName('edit-module-form')[0].onchange = this.editRect.bind(this);
 
-			EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_BOX, r);
+			EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_PLATE, plate);
 		},
 
 		isRectDataValid: function (data) {
@@ -82,16 +81,15 @@
 		editRect: function (e) {
 			// Get rect data from form that is connected to event e
 			var f = e.target.form,
-				r = {
-					id: f.getElementsByClassName('id')[0].textContent,
-					x: f.getElementsByClassName('input-x')[0].value * Globals.BRICKSIZE,
-					y: f.getElementsByClassName('input-y')[0].value * Globals.BRICKSIZE,
-					height: f.getElementsByClassName('input-height')[0].value * Globals.BRICKSIZE,
-					width: f.getElementsByClassName('input-width')[0].value * Globals.BRICKSIZE,
-					color: f.getElementsByClassName('input-color')[0].value
-				};
+				plate_id = parseInt(f.getElementsByClassName('id')[0].textContent),
+				target_plate = this.plates[plate_id - 1];
+			target_plate.x = parseInt(f.getElementsByClassName('input-x')[0].value);
+			target_plate.y = parseInt(f.getElementsByClassName('input-y')[0].value);
+			target_plate.height = parseInt(f.getElementsByClassName('input-height')[0].value);
+			target_plate.width = parseInt(f.getElementsByClassName('input-width')[0].value);
+			target_plate.color = f.getElementsByClassName('input-color')[0].value;
 
-			EventHandler.emit(EventHandler.VIEW_GRID_EDIT_RECT, r);
+			EventHandler.emit(EventHandler.MODULE_VIEW_EDIT_PLATE, target_plate);
 		},
 
 		toggleEditForm: function (e) {
@@ -101,7 +99,7 @@
 			if (e.target.tagName === 'SPAN') {
 				li = e.target.parentElement.parentElement;
 			} else {
-				li= e.target.parentElement;
+				li = e.target.parentElement;
 			}
 			f = li.getElementsByClassName('edit-module-form')[0];
 			f.style.display = ('block' === f.style.display) ? 'none' : 'block';

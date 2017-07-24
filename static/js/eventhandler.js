@@ -1,14 +1,15 @@
+/*global console*/
 var EventHandler = {
 	// Event types
 	VIEW_GRID_MOUSE_IN: 'view_grid_mouse_in',
 	VIEW_GRID_MOUSE_MOVE: 'view_grid_mouse_move',
 	VIEW_GRID_MOUSE_OUT: 'view_grid_mouse_out',
 	VIEW_GRID_CLICK: 'view_grid_click',
-	VIEW_GRID_GENERATE_BOX: 'view_grid_generate_box',
+	VIEW_GRID_GENERATE_PLATE: 'view_grid_generate_plate',
 	VIEW_GRID_GENERATE_POINT: 'view_grid_generate_point',
-	VIEW_GRID_EDIT_RECT: 'module_view_edit_rect',
 
-	MODULE_VIEW_GENERATE_RECT: 'module_view_generate_rect',
+	MODULE_VIEW_GENERATE_PLATE: 'module_view_generate_plate',
+	MODULE_VIEW_EDIT_PLATE: 'module_view_edit_rect',
 
 	PROJECT_CHANGE_SETTINGS: 'project_change_settings',
 	// Event mapping

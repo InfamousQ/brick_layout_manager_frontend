@@ -40,7 +40,7 @@
 			}
 
 			this.endPoint = e;
-			EventHandler.emit(EventHandler.MODULE_VIEW_GENERATE_RECT, {
+			EventHandler.emit(EventHandler.MODULE_VIEW_GENERATE_PLATE, {
 				start: this.startPoint,
 				end: this.endPoint
 			});
