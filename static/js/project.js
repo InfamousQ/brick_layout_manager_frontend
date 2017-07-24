@@ -1,3 +1,4 @@
+/*jshint browser: true*/
 /*global EventHandler */
 (function () {
 	"use strict";
