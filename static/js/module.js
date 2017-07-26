@@ -1,5 +1,5 @@
 /*jshint browser: true, esversion: 6*/
-/*global EventHandler, Globals, Plate */
+/*global EventHandler, Globals, Baseplate, Plate */
 (function () {
 	"use strict";
 	var Module = {
@@ -8,10 +8,10 @@
 			modulelistElement: 'module-list'
 		},
 
-		// Contains SVG Rect representations of Plates. Index is id of representative plate in this.plates.
+		// Contains SVG Rect representations of Plates. Index is id of representative plate in this.baseplate's collection.
 		rects: [],
 		// Contains Plates. Index is id of plate
-		plates: [],
+		baseplate: null,
 
 		$module: null,
 
@@ -25,9 +25,10 @@
 				return false;
 			}
 
+			// TODO: Should we generate Plate in Baseplate instead and just handle id here ?
 			// Initialize r as drawn rect
 			var plate = Plate.fromRect({
-				id: this.plates.length + 1,
+				id: this.baseplate.getNextId(),
 				x: data.start.x,
 				y: data.start.y,
 				width: data.end.x - data.start.x,
@@ -40,19 +41,19 @@
 			}
 			var li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
 
-			this.plates.splice(plate.id, 0, plate);
+			this.baseplate.addPlate(plate);
 
 			// Generate graphical representations of the rect. One to module, one to view.
 			// Copy skeleton li, fill points and then add to ul
 			li.classList.remove('skeleton');
-			li.getElementsByClassName('id')[0].textContent = plate.id;
+			li.getElementsByClassName('id')[0].textContent = (plate.id + 1);
 			li.getElementsByClassName('x')[0].textContent = plate.x;
 			li.getElementsByClassName('y')[0].textContent = plate.y;
 			li.getElementsByClassName('w')[0].textContent = plate.width;
 			li.getElementsByClassName('h')[0].textContent = plate.height;
 			li.getElementsByClassName('show-edit-module-form')[0].onclick = this.toggleEditForm.bind(this);
 			// Form for editing the plates
-			li.getElementsByClassName('id')[1].textContent = plate.id;
+			li.getElementsByClassName('id')[1].textContent = (plate.id + 1);
 			li.getElementsByClassName('input-x')[0].value = plate.x;
 			li.getElementsByClassName('input-y')[0].value = plate.y;
 			li.getElementsByClassName('input-height')[0].value = plate.height;
@@ -82,7 +83,7 @@
 			// Get rect data from form that is connected to event e
 			var f = e.target.form,
 				plate_id = parseInt(f.getElementsByClassName('id')[0].textContent),
-				target_plate = this.plates[plate_id - 1];
+				target_plate = this.baseplate.getPlateById(plate_id - 1);
 			target_plate.x = parseInt(f.getElementsByClassName('input-x')[0].value);
 			target_plate.y = parseInt(f.getElementsByClassName('input-y')[0].value);
 			target_plate.height = parseInt(f.getElementsByClassName('input-height')[0].value);
@@ -106,6 +107,7 @@
 		},
 
 		init: function () {
+			this.baseplate = new Baseplate();
 			this.$module = document.getElementById(this.settings.moduleElement);
 			this.$modulelist = document.getElementById(this.settings.modulelistElement);
 			this.bindEvents();
