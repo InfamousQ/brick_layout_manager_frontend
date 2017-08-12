@@ -1,76 +1,130 @@
 /*jshint esversion: 6 */
 /*global Globals */
 
-/**
- * Plate is SVG Rect that displays single square region in the SVG.
- * In LEGO terms, builders add Plates on top of Baseplate to structure their Module
- * Note: each dimension is in studs, to calculate SVG position use Globals.BRICKSIZE
- */
-class Plate {
+class Rect {
 	constructor(id, x, y, h, w, c = Globals.COLORS.default) {
 		/**
-		 * @member {number} Id of Plate
+		 * @member {number} Id of Rect
 		 */
 		this.id = id;
 		/**
-		 * @member {number} X position of Plate in studs.
+		 * @member {number} X position of Rect.
 		 */
-		this.x = x / Globals.BRICKSIZE;
+		this.x = x;
 		/**
-		 * @member {number} Y position of Plate in studs.
+		 * @member {number} Y position of Rect.
 		 */
-		this.y = y / Globals.BRICKSIZE;
+		this.y = y;
 		/**
-		 * @member {number} Height of Plate in studs.
+		 * @member {number} Height of Rect.
 		 */
-		this.height = h / Globals.BRICKSIZE;
+		this.height = h;
 		/**
-		 * @member {number} Width of Plate in studs.
+		 * @member {number} Width of Rect.
 		 */
-		this.width = w / Globals.BRICKSIZE;
+		this.width = w;
 		/**
-		 * @member {String} Color of Plate in hex.
+		 * @member {String} Color of Rect in hex.
 		 */
 		this.color = c;
 	}
 
+	static isValidRect(r) {
+		// Expected properties: id, x, y, height, width. i must exist and not be empty, X & Y must be zero or above, height & width must be 1 or above.
+		if (!r.hasOwnProperty('id') || r.id === "") {
+			return false;
+		}
+		if (!r.hasOwnProperty('x') || r.x < 0) {
+			return false;
+		}
+		if (!r.hasOwnProperty('y') || r.y < 0) {
+			return false;
+		}
+		if (!r.hasOwnProperty('height') || r.height < 1) {
+			return false;
+		}
+		if (!r.hasOwnProperty('width') || r.width < 1) {
+			return false;
+		}
+		return true;
+	}
+
+	static fromEvent(data) {
+		if (undefined === data.id) {
+			return null;
+		}
+
+		if (undefined === data.start || undefined === data.start.x || undefined === data.start.y) {
+			return null;
+		}
+
+		if (undefined === data.end || undefined === data.end.x || undefined === data.end.y) {
+			return null;
+		}
+
+		return new Rect(data.id, data.start.x, data.start.y, (data.end.x - data.start.x), (data.end.y - data.start.y));
+	}
+}
+
+/**
+ * Plate is SVG Rect that displays single square region in the SVG.
+ * In LEGO terms, builders add Plates on top of Baseplate to structure their Module
+ * Note: each dimension is in studs, to calculate SVG position use toRect()
+ */
+class Plate {
+	constructor(rect = null) {
+		if (!(rect instanceof Rect)) {
+			throw 'Plate must be constructed from Rect';
+		}
+
+		if (!Rect.isValidRect(rect)) {
+			throw 'Plate must be constructed from valid Rect';
+		}
+
+		/**
+		 * @member {number} Id of Plate
+		 */
+		this.id = rect.id;
+		/**
+		 * @member {number} X position of Plate in studs.
+		 */
+		this.x = rect.x / Globals.BRICKSIZE;
+		/**
+		 * @member {number} Y position of Plate in studs.
+		 */
+		this.y = rect.y / Globals.BRICKSIZE;
+		/**
+		 * @member {number} Height of Plate in studs.
+		 */
+		this.height = rect.height / Globals.BRICKSIZE;
+		/**
+		 * @member {number} Width of Plate in studs.
+		 */
+		this.width = rect.width / Globals.BRICKSIZE;
+		/**
+		 * @member {String} Color of Plate in hex.
+		 */
+		this.color = rect.color;
+	}
+
 	// Returns this Plate in SVG Rect format (calculates SVG dimensions)
 	toRect() {
-		var r = {
-			id: this.id,
-			x: this.x * Globals.BRICKSIZE,
-			y: this.y * Globals.BRICKSIZE,
-			height: this.height * Globals.BRICKSIZE,
-			width: this.width * Globals.BRICKSIZE,
-			color: this.color
-		};
-		return r;
+		return new Rect(
+			this.id,
+			this.x * Globals.BRICKSIZE,
+			this.y * Globals.BRICKSIZE,
+			this.height * Globals.BRICKSIZE,
+			this.width * Globals.BRICKSIZE,
+			this.color);
 	}
 
 	static fromRect(r = null) {
-		if (null === r) {
-			return null;
-		}
-
-		// Expected properties: id, x, y, height, width. i must exist and not be empty, X & Y must be zero or above, height & width must be 1 or above.
-		if (!r.hasOwnProperty('id') || r.id === "") {
-			return null;
-		}
-		if (!r.hasOwnProperty('x') || r.x < 0) {
-			return null;
-		}
-		if (!r.hasOwnProperty('y') || r.y < 0) {
-			return null;
-		}
-		if (!r.hasOwnProperty('height') || r.height < 1) {
-			return null;
-		}
-		if (!r.hasOwnProperty('width') || r.width < 1) {
+		if (null === r || !(r instanceof Rect)) {
 			return null;
 		}
 
 		// Everything looks good, get data from r
-		return new Plate(r.id, r.x, r.y, r.height, r.width, (r.hasOwnProperty('color') ? r.color : null));
+		return new Plate(r);
 	}
 }
 

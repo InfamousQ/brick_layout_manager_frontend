@@ -1,5 +1,5 @@
 /*jshint browser: true, esversion: 6*/
-/*global EventHandler, Globals, Baseplate, Plate */
+/*global EventHandler, Globals, Baseplate, Plate, Rect*/
 (function () {
 	"use strict";
 	var Module = {
@@ -20,23 +20,23 @@
 		},
 
 		generatePlate: function (data) {
-			// Ensure data is valid
-			if (!this.isRectDataValid(data)) {
+			// Generate Rect from data
+			var rect = null,
+				plate = null;
+			try {
+				// Note: New rect's id is the next valid Plate id as Rect id == Plate id
+				data.id = this.baseplate.getNextId();
+				rect = Rect.fromEvent(data);
+			} catch (e) {
+				console.log("Could not generate rect from data: ", data);
 				return false;
 			}
 
 			// TODO: Should we generate Plate in Baseplate instead and just handle id here ?
 			// Initialize r as drawn rect
-			var plate = Plate.fromRect({
-				id: this.baseplate.getNextId(),
-				x: data.start.x,
-				y: data.start.y,
-				width: data.end.x - data.start.x,
-				height: data.end.y - data.start.y,
-				color: Globals.COLORS.default
-			});
-			if (null === plate) {
-				// Something went wrong! TODO: error log
+			try {
+				plate = Plate.fromRect(rect);
+			} catch (e) {
 				return false;
 			}
 			var li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
