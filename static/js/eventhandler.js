@@ -12,6 +12,8 @@ var EventHandler = {
 	MODULE_VIEW_EDIT_PLATE: 'module_view_edit_rect',
 
 	PROJECT_CHANGE_SETTINGS: 'project_change_settings',
+
+	ERROR_MSG: 'error_msg',
 	// Event mapping
 	handlers: [],
 

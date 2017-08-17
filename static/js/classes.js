@@ -1,8 +1,8 @@
 /*jshint esversion: 6 */
-/*global Globals */
+/*global Globals, EventHandler */
 
 class Rect {
-	constructor(id, x, y, h, w, c = Globals.COLORS.default) {
+	constructor(id, x, y, z, h, w, c = Globals.COLORS.default) {
 		/**
 		 * @member {number} Id of Rect
 		 */
@@ -15,6 +15,10 @@ class Rect {
 		 * @member {number} Y position of Rect.
 		 */
 		this.y = y;
+		/**
+		 * @member {number} Z-index position of Rect
+		 */
+		this.z = z;
 		/**
 		 * @member {number} Height of Rect.
 		 */
@@ -40,6 +44,9 @@ class Rect {
 		if (!r.hasOwnProperty('y') || r.y < 0) {
 			return false;
 		}
+		if (!r.hasOwnProperty('z') || r.z < 0) {
+			return false;
+		}
 		if (!r.hasOwnProperty('height') || r.height < 1) {
 			return false;
 		}
@@ -62,7 +69,11 @@ class Rect {
 			return null;
 		}
 
-		return new Rect(data.id, data.start.x, data.start.y, (data.end.x - data.start.x), (data.end.y - data.start.y));
+		if (undefined === data.z) {
+			return null;
+		}
+
+		return new Rect(data.id, data.start.x, data.start.y, data.z, (data.end.y - data.start.y), (data.end.x - data.start.x));
 	}
 }
 
@@ -94,6 +105,10 @@ class Plate {
 		 */
 		this.y = rect.y / Globals.BRICKSIZE;
 		/**
+		 * @member {number} Z-index of Plate
+		 */
+		this.z = rect.z;
+		/**
 		 * @member {number} Height of Plate in studs.
 		 */
 		this.height = rect.height / Globals.BRICKSIZE;
@@ -113,18 +128,19 @@ class Plate {
 			this.id,
 			this.x * Globals.BRICKSIZE,
 			this.y * Globals.BRICKSIZE,
+			this.z,
 			this.height * Globals.BRICKSIZE,
 			this.width * Globals.BRICKSIZE,
 			this.color);
 	}
 
 	static fromRect(r = null) {
-		if (null === r || !(r instanceof Rect)) {
+		try {
+			return new Plate(r);
+		} catch (e) {
+			EventHandler.emit(EventHandler.ERROR_MSG, e);
 			return null;
 		}
-
-		// Everything looks good, get data from r
-		return new Plate(r);
 	}
 }
 

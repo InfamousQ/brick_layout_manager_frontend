@@ -9,6 +9,7 @@
 		},
 
 		// Contains SVG Rect representations of Plates. Index is id of representative plate in this.baseplate's collection.
+		// TODO: Do we need this anymore here?
 		rects: [],
 		// Contains Plates. Index is id of plate
 		baseplate: null,
@@ -26,9 +27,10 @@
 			try {
 				// Note: New rect's id is the next valid Plate id as Rect id == Plate id
 				data.id = this.baseplate.getNextId();
+				data.z = data.id;
 				rect = Rect.fromEvent(data);
 			} catch (e) {
-				console.log("Could not generate rect from data: ", data);
+				EventHandler.emit(EventHandler.ERROR_MSG, "Could not generate rect from data: ", data);
 				return false;
 			}
 
@@ -49,6 +51,7 @@
 			li.getElementsByClassName('id')[0].textContent = (plate.id + 1);
 			li.getElementsByClassName('x')[0].textContent = plate.x;
 			li.getElementsByClassName('y')[0].textContent = plate.y;
+			li.getElementsByClassName('z')[0].textContent = plate.z;
 			li.getElementsByClassName('w')[0].textContent = plate.width;
 			li.getElementsByClassName('h')[0].textContent = plate.height;
 			li.getElementsByClassName('show-edit-module-form')[0].onclick = this.toggleEditForm.bind(this);
@@ -56,6 +59,7 @@
 			li.getElementsByClassName('id')[1].textContent = (plate.id + 1);
 			li.getElementsByClassName('input-x')[0].value = plate.x;
 			li.getElementsByClassName('input-y')[0].value = plate.y;
+			li.getElementsByClassName('input-z')[0].value = plate.z;
 			li.getElementsByClassName('input-height')[0].value = plate.height;
 			li.getElementsByClassName('input-width')[0].value = plate.width;
 			this.$modulelist.appendChild(li);
@@ -86,6 +90,7 @@
 				target_plate = this.baseplate.getPlateById(plate_id - 1);
 			target_plate.x = parseInt(f.getElementsByClassName('input-x')[0].value);
 			target_plate.y = parseInt(f.getElementsByClassName('input-y')[0].value);
+			target_plate.z = parseInt(f.getElementsByClassName('input-z')[0].value);
 			target_plate.height = parseInt(f.getElementsByClassName('input-height')[0].value);
 			target_plate.width = parseInt(f.getElementsByClassName('input-width')[0].value);
 			target_plate.color = f.getElementsByClassName('input-color')[0].value;

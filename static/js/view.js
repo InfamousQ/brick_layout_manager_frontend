@@ -86,6 +86,13 @@
 			rect.setAttributeNS(null, 'height', r.height);
 			rect.setAttributeNS(null, 'width', r.width);
 			rect.setAttributeNS(null, 'fill', r.color);
+			// Move SVG Rect to right index
+			var target_z = r.z + 3; // Defs, background rect and hover-rect.
+			if (target_z > this.$svg.childElementCount) {
+				this.$svg.appendChild(rect);
+			} else {
+				this.$svg.insertBefore(rect, this.$svg.children[target_z]);
+			}
 		},
 
 		mouseInEditor: function (event) {
