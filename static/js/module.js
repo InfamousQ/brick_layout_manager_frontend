@@ -40,33 +40,7 @@
 			} catch (e) {
 				return false;
 			}
-			var li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
-
 			this.baseplate.addPlate(plate);
-
-			// Generate graphical representations of the rect. One to module, one to view.
-			// Copy skeleton li, fill points and then add to ul
-			li.classList.remove('skeleton');
-			li.id = "module-" + plate.id;
-			li.getElementsByClassName('id')[0].textContent = (plate.id + 1);
-			li.getElementsByClassName('x')[0].textContent = plate.x;
-			li.getElementsByClassName('y')[0].textContent = plate.y;
-			li.getElementsByClassName('z')[0].textContent = plate.z;
-			li.getElementsByClassName('w')[0].textContent = plate.width;
-			li.getElementsByClassName('h')[0].textContent = plate.height;
-			li.getElementsByClassName('show-edit-module-form')[0].onclick = this.toggleEditForm.bind(this);
-			// Form for editing the plates
-			li.getElementsByClassName('id')[1].textContent = (plate.id + 1);
-			li.getElementsByClassName('input-x')[0].value = plate.x;
-			li.getElementsByClassName('input-y')[0].value = plate.y;
-			li.getElementsByClassName('input-z')[0].value = plate.z;
-			li.getElementsByClassName('input-height')[0].value = plate.height;
-			li.getElementsByClassName('input-width')[0].value = plate.width;
-			this.$modulelist.appendChild(li);
-			// Note: Add event to dynamically created form
-			li.getElementsByClassName('edit-module-form')[0].onchange = this.editRect.bind(this);
-			li.getElementsByClassName('input-delete')[0].onclick = this.deleteRect.bind(this);
-
 			EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_PLATE, plate);
 		},
 
@@ -88,7 +62,7 @@
 			// Get rect data from form that is connected to event e
 			var f = e.target.form,
 				plate_id = parseInt(f.getElementsByClassName('id')[0].textContent),
-				target_plate = this.baseplate.getPlateById(plate_id - 1);
+				target_plate = this.baseplate.getPlateById(plate_id);
 			target_plate.x = parseInt(f.getElementsByClassName('input-x')[0].value);
 			target_plate.y = parseInt(f.getElementsByClassName('input-y')[0].value);
 			target_plate.z = parseInt(f.getElementsByClassName('input-z')[0].value);
@@ -114,8 +88,6 @@
 			// Remove from baseplate
 			this.baseplate.remotePlateById(plate_id);
 
-			// Remove li and form
-			document.getElementById('module-' + plate_id).remove();
 			EventHandler.emit(EventHandler.MODULE_VIEW_DELETE_PLATE, plate_id);
 		},
 
@@ -133,7 +105,7 @@
 		},
 
 		init: function () {
-			this.baseplate = new Baseplate();
+			this.baseplate = new Baseplate(this.populatePlateList.bind(this));
 			this.$module = document.getElementById(this.settings.moduleElement);
 			this.$modulelist = document.getElementById(this.settings.modulelistElement);
 			this.bindEvents();
@@ -149,6 +121,39 @@
 				opt.innerHTML = c;
 				color_select.appendChild(opt);
 			}
+		},
+
+		populatePlateList: function () {
+			//TODO: Remove li-elements with class 'plate'
+			Array.from(this.$modulelist.querySelectorAll("li:not(.skeleton)")).forEach(function (li) {
+				li.remove();
+			});
+
+			// Generate new li-element for each plate in this.baseplate. li-element contains both short info text and edit form
+			Array.from(this.baseplate.getPlates()).forEach(function (plate) {
+				// Copy skeleton li, fill points and then add to ul
+				var li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
+				li.classList.remove('skeleton');
+				li.id = "module-" + plate.id;
+				li.getElementsByClassName('id')[0].textContent = plate.id;
+				li.getElementsByClassName('x')[0].textContent = plate.x;
+				li.getElementsByClassName('y')[0].textContent = plate.y;
+				li.getElementsByClassName('z')[0].textContent = plate.z;
+				li.getElementsByClassName('w')[0].textContent = plate.width;
+				li.getElementsByClassName('h')[0].textContent = plate.height;
+				li.getElementsByClassName('show-edit-module-form')[0].onclick = this.toggleEditForm.bind(this);
+				// Form for editing the plates
+				li.getElementsByClassName('id')[1].textContent = plate.id;
+				li.getElementsByClassName('input-x')[0].value = plate.x;
+				li.getElementsByClassName('input-y')[0].value = plate.y;
+				li.getElementsByClassName('input-z')[0].value = plate.z;
+				li.getElementsByClassName('input-height')[0].value = plate.height;
+				li.getElementsByClassName('input-width')[0].value = plate.width;
+				this.$modulelist.appendChild(li);
+				// Note: Add event to dynamically created form
+				li.getElementsByClassName('edit-module-form')[0].onchange = this.editRect.bind(this);
+				li.getElementsByClassName('input-delete')[0].onclick = this.deleteRect.bind(this);
+			}, this);
 		}
 	};
 	Module.init();

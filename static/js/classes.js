@@ -151,11 +151,41 @@ class Baseplate {
 	/**
 	 * Creates Baseplate
 	 */
-	constructor() {
+	constructor(onchangefunction) {
+		if (!(onchangefunction instanceof Function)) {
+			throw 'Baseplate constructor requires callback function as parameter';
+		}
+		this.onchangefunction = onchangefunction;
+
+		let callbackmap = class ListMap extends Map {
+			constructor(callback) {
+				super();
+				this.callback_function = callback;
+			}
+
+			set(key, item) {
+				let val = super.set(key, item);
+				this.onSet();
+				return val;
+			}
+
+			delete(key) {
+				let val = super.delete(key);
+				this.onSet();
+				return val;
+			}
+
+			onSet() {
+				if (this.callback_function instanceof Function) {
+					this.callback_function();
+				}
+			}
+		};
+
 		/**
 		* @member {Map<number,Plate>} Map of Plates
 		*/
-		this.plates = new Map();
+		this.plates = new callbackmap(onchangefunction);
 	}
 
 	/**
@@ -163,9 +193,12 @@ class Baseplate {
 	 * @returns {number} Next available id
 	 */
 	getNextId() {
-		return Array.from(this.plates.keys()).reduce(function (curMax, curVal) {
+		var keys = this.plates.keys();
+		var keys_array = Array.from(keys);
+		var x = keys_array.reduce(function (curMax, curVal) {
 			return Math.max(curMax, curVal);
 		}, 0);
+		return x + 1;
 	}
 
 	/**
@@ -238,5 +271,16 @@ class Baseplate {
 			return;
 		}
 		this.remotePlateById(p.id);
+	}
+
+	getPlates() {
+		return this.plates.values();
+	}
+
+	/**
+	 * Calls predefined callback function.
+	 */
+	onPlateMapChange() {
+		this.onchangefunction();
 	}
 }
