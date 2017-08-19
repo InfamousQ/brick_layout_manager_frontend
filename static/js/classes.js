@@ -153,9 +153,9 @@ class Baseplate {
 	 */
 	constructor() {
 		/**
-		* @member {Plates[]} Array of Plates
+		* @member {Map<number,Plate>} Map of Plates
 		*/
-		this.plates = [];
+		this.plates = new Map();
 	}
 
 	/**
@@ -163,12 +163,9 @@ class Baseplate {
 	 * @returns {number} Next available id
 	 */
 	getNextId() {
-		var nextid = 0,
-			ids = Object.keys(this.plates);
-		if (ids.length > 0) {
-			nextid = (Math.max.apply(null, ids) + 1);
-		}
-		return nextid;
+		return Array.from(this.plates.keys()).reduce(function (curMax, curVal) {
+			return Math.max(curMax, curVal);
+		}, 0);
 	}
 
 	/**
@@ -179,7 +176,7 @@ class Baseplate {
 		if (!(p instanceof Plate)) {
 			return;
 		}
-		this.plates.splice(p.id, 0, p);
+		this.plates.set(p.id, p);
 	}
 
 	/**
@@ -188,7 +185,11 @@ class Baseplate {
 	 * @returns {?Plate} Plate that has given id. Null of no Plate founds
 	 */
 	getPlateById(pid) {
-		return (this.plates[pid] === 'undefined' ? null : this.plates[pid]);
+		if (this.plates.has(pid)) {
+			return this.plates.get(pid);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -202,12 +203,12 @@ class Baseplate {
 			return false;
 		}
 
-		if (this.plates[pid] === 'undefined') {
+		if (!this.plates.has(pid)) {
 			return false;
 		}
 
 		// TODO: This should be done by copying possible data from p, not by just moving data around
-		this.plates[pid] = p;
+		this.plates.set(pid, p);
 		return true;
 	}
 
@@ -225,7 +226,7 @@ class Baseplate {
 	 * @param {number} pid Id of to-be-removed plate
 	 */
 	remotePlateById(pid) {
-		this.plates.splice(pid, 1);
+		this.plates.delete(pid);
 	}
 
 	/**
