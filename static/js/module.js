@@ -1,5 +1,5 @@
 /*jshint browser: true, esversion: 6*/
-/*global EventHandler, Globals, Baseplate, Plate, Rect*/
+/*global EventHandler, Globals, Baseplate, Plate, Rect, confirm*/
 (function () {
 	"use strict";
 	var Module = {
@@ -102,6 +102,15 @@
 		deleteRect: function (e) {
 			var f = e.target.form,
 				plate_id = parseInt(f.getElementsByClassName('id')[0].textContent) - 1;
+
+			// TODO: Confirm is a bit ugly hack, we should use some more nicer looking window..
+			// Confirm deletion from user
+			var user_allow_deletion = confirm('Do you wish to delete Plate ' + (plate_id + 1) + '?');
+			if (!user_allow_deletion) {
+				// User does not wish to delete selected Plate
+				return;
+			}
+
 			// Remove from baseplate
 			this.baseplate.remotePlateById(plate_id);
 
