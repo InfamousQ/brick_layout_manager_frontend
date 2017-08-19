@@ -26,6 +26,7 @@
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_PLATE, View.generateBox.bind(this));
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_POINT, View.generatePoint.bind(this));
 			EventHandler.listen(EventHandler.MODULE_VIEW_EDIT_PLATE, View.editPlate.bind(this));
+			EventHandler.listen(EventHandler.MODULE_VIEW_DELETE_PLATE, View.deletePlate.bind(this));
 			EventHandler.listen(EventHandler.PROJECT_CHANGE_SETTINGS, View.readSettings.bind(this));
 		},
 
@@ -93,6 +94,11 @@
 			} else {
 				this.$svg.insertBefore(rect, this.$svg.children[target_z]);
 			}
+		},
+
+		deletePlate: function (plate_id) {
+			// TODO: Check validity of event
+			document.getElementById(plate_id).remove();
 		},
 
 		mouseInEditor: function (event) {

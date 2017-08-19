@@ -47,6 +47,7 @@
 			// Generate graphical representations of the rect. One to module, one to view.
 			// Copy skeleton li, fill points and then add to ul
 			li.classList.remove('skeleton');
+			li.id = "module-" + plate.id;
 			li.getElementsByClassName('id')[0].textContent = (plate.id + 1);
 			li.getElementsByClassName('x')[0].textContent = plate.x;
 			li.getElementsByClassName('y')[0].textContent = plate.y;
@@ -64,6 +65,7 @@
 			this.$modulelist.appendChild(li);
 			// Note: Add event to dynamically created form
 			li.getElementsByClassName('edit-module-form')[0].onchange = this.editRect.bind(this);
+			li.getElementsByClassName('input-delete')[0].onclick = this.deleteRect.bind(this);
 
 			EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_PLATE, plate);
 		},
@@ -95,6 +97,17 @@
 			target_plate.color = f.getElementsByClassName('input-color')[0].value;
 
 			EventHandler.emit(EventHandler.MODULE_VIEW_EDIT_PLATE, target_plate);
+		},
+
+		deleteRect: function (e) {
+			var f = e.target.form,
+				plate_id = parseInt(f.getElementsByClassName('id')[0].textContent) - 1;
+			// Remove from baseplate
+			this.baseplate.remotePlateById(plate_id);
+
+			// Remove li and form
+			document.getElementById('module-' + plate_id).remove();
+			EventHandler.emit(EventHandler.MODULE_VIEW_DELETE_PLATE, plate_id);
 		},
 
 		toggleEditForm: function (e) {
