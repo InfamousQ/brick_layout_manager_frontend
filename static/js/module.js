@@ -24,14 +24,13 @@
 			// Generate Rect from data
 			var rect = null,
 				plate = null;
-			try {
-				// Note: New rect's id is the next valid Plate id as Rect id == Plate id
-				data.id = this.baseplate.getNextId();
-				data.z = data.id;
-				rect = Rect.fromEvent(data);
-			} catch (e) {
-				EventHandler.emit(EventHandler.ERROR_MSG, "Could not generate rect from data: ", data);
-				return false;
+
+			// Note: New rect's id is the next valid Plate id as Rect id == Plate id
+			data.id = this.baseplate.getNextId();
+			data.z = data.id;
+			rect = Rect.fromEvent(data);
+			if (rect === null) {
+					return false;
 			}
 
 			// TODO: Should we generate Plate in Baseplate instead and just handle id here ?
