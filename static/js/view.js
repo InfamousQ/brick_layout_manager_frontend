@@ -1,5 +1,5 @@
 /*jshint browser: true*/
-/*global EventHandler, Globals */
+/*global EventHandler, Globals, Plate */
 (function () {
 	"use strict";
 	var View = {
@@ -11,6 +11,7 @@
 
 		$svg: null,
 		$svg_rect_container: null,
+		$svg_point_container: null,
 		$bgrect: null,
 
 		initSVG: function () {
@@ -57,12 +58,17 @@
 			point.setAttributeNS(null, 'height', p.height);
 			point.setAttributeNS(null, 'width', p.width);
 			point.setAttributeNS(null, 'fill', 'purple');
-			// Note: points are drawn to SVG background
-			this.$svg.appendChild(point);
+			point.setAttributeNS(null, 'fill-opacity', '0.5');
+			// Note: points are drawn to point container
+			this.$svg_point_container.appendChild(point);
 		},
 
 		generateBox: function (plate) {
-			// TODO: Check validity of event
+			if (! (plate instanceof Plate)) {
+				EventHandler.emit(EventHandler.ERROR_MSG, 'View - trying to edit plate with faulty parameter:\n' + JSON.stringify(plate));
+				return false;
+			}
+
 			var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect'),
 					tmp_points = document.getElementsByClassName('tmp-point'),
 					r = plate.toRect();
@@ -82,7 +88,11 @@
 		},
 
 		editPlate: function (plate) {
-			// TODO: Check validity of event
+			if (! (plate instanceof Plate)) {
+				EventHandler.emit(EventHandler.ERROR_MSG, 'View - trying to edit plate with faulty parameter:\n' + JSON.stringify(plate));
+				return false;
+			}
+
 			var rect = document.getElementById(plate.id),
 				r = plate.toRect();
 			rect.setAttributeNS(null, 'x', r.x);
@@ -101,7 +111,11 @@
 		},
 
 		deletePlate: function (plate_id) {
-			// TODO: Check validity of event
+			if( !Number.isInteger(plate_id)) {
+				EventHandler.emit(EventHandler.ERROR_MSG, 'View - trying to delete plate with faulty parameter:\n' + JSON.stringify(plate_id));
+				return false;
+			}
+
 			document.getElementById(plate_id).remove();
 		},
 
@@ -150,6 +164,7 @@
 		init: function () {
 			this.$svg = document.getElementById(this.settings.svgElement);
 			this.$svg_rect_container = this.$svg.getElementsByTagName('g')[0];
+			this.$svg_point_container = this.$svg.getElementsByTagName('g')[1];
 			this.$bgrect = document.getElementById(this.settings.bgRectId);
 			this.initSVG();
 			this.bindEvents();
