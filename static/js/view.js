@@ -10,6 +10,7 @@
 		},
 
 		$svg: null,
+		$svg_rect_container: null,
 		$bgrect: null,
 
 		initSVG: function () {
@@ -56,6 +57,7 @@
 			point.setAttributeNS(null, 'height', p.height);
 			point.setAttributeNS(null, 'width', p.width);
 			point.setAttributeNS(null, 'fill', 'purple');
+			// Note: points are drawn to SVG background
 			this.$svg.appendChild(point);
 		},
 
@@ -70,7 +72,8 @@
 			rect.setAttributeNS(null, 'height', r.height);
 			rect.setAttributeNS(null, 'width', r.width);
 			rect.setAttributeNS(null, 'fill', r.color);
-			this.$svg.appendChild(rect);
+			// Note: rects are drawn to Rect container
+			this.$svg_rect_container.appendChild(rect);
 
 			// Remove temporary points
 			while(tmp_points.length > 0) {
@@ -87,12 +90,13 @@
 			rect.setAttributeNS(null, 'height', r.height);
 			rect.setAttributeNS(null, 'width', r.width);
 			rect.setAttributeNS(null, 'fill', r.color);
+			// Note: rects are drawn to Rect container
 			// Move SVG Rect to right index
-			var target_z = r.z + 3; // Defs, background rect and hover-rect.
-			if (target_z > this.$svg.childElementCount) {
-				this.$svg.appendChild(rect);
+			var target_z = r.z;
+			if (target_z > this.$svg_rect_container.childElementCount) {
+				this.$svg_rect_container.appendChild(rect);
 			} else {
-				this.$svg.insertBefore(rect, this.$svg.children[target_z]);
+				this.$svg_rect_container.insertBefore(rect, this.$svg_rect_container.children[target_z]);
 			}
 		},
 
@@ -145,6 +149,7 @@
 
 		init: function () {
 			this.$svg = document.getElementById(this.settings.svgElement);
+			this.$svg_rect_container = this.$svg.getElementsByTagName('g')[0];
 			this.$bgrect = document.getElementById(this.settings.bgRectId);
 			this.initSVG();
 			this.bindEvents();
