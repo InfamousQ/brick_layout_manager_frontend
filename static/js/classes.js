@@ -150,6 +150,7 @@ class Plate {
 class Baseplate {
 	/**
 	 * Creates Baseplate
+	 * @param {onChangeFunction} Function that will be called when there is change in Plates.
 	 */
 	constructor(onchangefunction) {
 		if (!(onchangefunction instanceof Function)) {
@@ -163,18 +164,32 @@ class Baseplate {
 				this.callback_function = callback;
 			}
 
+			/**
+			 * Adds or updates item specified by key
+			 * @param   {Object} key  Identifying object
+			 * @param   {Object} item Object to save
+			 * @returns {Map} Reference to called object
+			 */
 			set(key, item) {
 				let val = super.set(key, item);
 				this.onSet();
 				return val;
 			}
 
+			/**
+			 * Returns item specified by key
+			 * @param   {Object} key Identifying object
+			 * @returns {?Object} Item specified by key or undefined if no items are found
+			 */
 			delete(key) {
 				let val = super.delete(key);
 				this.onSet();
 				return val;
 			}
 
+			/**
+			 * Calls defined callback_function when there is change in the collection
+			 */
 			onSet() {
 				if (this.callback_function instanceof Function) {
 					this.callback_function();
@@ -193,12 +208,10 @@ class Baseplate {
 	 * @returns {number} Next available id
 	 */
 	getNextId() {
-		var keys = this.plates.keys();
-		var keys_array = Array.from(keys);
-		var x = keys_array.reduce(function (curMax, curVal) {
+		var curMaxId = Array.from(this.plates.keys()).reduce(function (curMax, curVal) {
 			return Math.max(curMax, curVal);
 		}, 0);
-		return x + 1;
+		return curMaxId + 1;
 	}
 
 	/**
@@ -273,14 +286,16 @@ class Baseplate {
 		this.remotePlateById(p.id);
 	}
 
+	/**
+	 * Return Iterator that contains all the Plates
+	 * @returns {Iterator<Plate>} Plates contained in this Baseplate
+	 */
 	getPlates() {
 		return this.plates.values();
 	}
-
-	/**
-	 * Calls predefined callback function.
-	 */
-	onPlateMapChange() {
-		this.onchangefunction();
-	}
 }
+
+/**
+ * Function that will be called if there is change in target collection
+ * @callback onChangeFunction
+ */

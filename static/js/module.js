@@ -123,16 +123,20 @@
 			}
 		},
 
+		/**
+		 * Re-populates list of Plates inside Module-div.
+		 */
 		populatePlateList: function () {
-			//TODO: Remove li-elements with class 'plate'
+			// Remove existing li-elements excluding the skeleton
 			Array.from(this.$modulelist.querySelectorAll("li:not(.skeleton)")).forEach(function (li) {
 				li.remove();
 			});
 
 			// Generate new li-element for each plate in this.baseplate. li-element contains both short info text and edit form
 			Array.from(this.baseplate.getPlates()).forEach(function (plate) {
-				// Copy skeleton li, fill points and then add to ul
+				// Copy skeleton li
 				var li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
+				// Add Plate information to the info span
 				li.classList.remove('skeleton');
 				li.id = "module-" + plate.id;
 				li.getElementsByClassName('id')[0].textContent = plate.id;
@@ -142,7 +146,7 @@
 				li.getElementsByClassName('w')[0].textContent = plate.width;
 				li.getElementsByClassName('h')[0].textContent = plate.height;
 				li.getElementsByClassName('show-edit-module-form')[0].onclick = this.toggleEditForm.bind(this);
-				// Form for editing the plates
+				// Add Plate information to the editing form
 				li.getElementsByClassName('id')[1].textContent = plate.id;
 				li.getElementsByClassName('input-x')[0].value = plate.x;
 				li.getElementsByClassName('input-y')[0].value = plate.y;
