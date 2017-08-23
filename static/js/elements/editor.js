@@ -74,7 +74,7 @@ App.editor = (function () {
 		},
 
 		inBricks: function (pixel_value) {
-			return (Math.round(pixel_value / Globals.BRICKSIZE) * Globals.BRICKSIZE);
+			return (Math.floor(pixel_value / Globals.BRICKSIZE) * Globals.BRICKSIZE);
 		}
 	};
 
