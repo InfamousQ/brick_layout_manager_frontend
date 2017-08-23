@@ -1,6 +1,6 @@
 /*jshint browser: true*/
-/*global EventHandler */
-(function () {
+/*global App, EventHandler */
+App.project = (function () {
 	"use strict";
 	var Project = {
 		settings: {
@@ -43,7 +43,9 @@
 
 			// Emit initial settings!
 			this.sendSettings();
+
+			return this;
 		}
 	};
-	Project.init();
+	return Project.init();
 }());

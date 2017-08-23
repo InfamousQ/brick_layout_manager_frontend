@@ -1,6 +1,6 @@
 /*jshint browser: true, esversion: 6*/
-/*global EventHandler, Globals, Baseplate, Plate, Rect, confirm*/
-(function () {
+/*global App, EventHandler, Globals, Baseplate, Plate, Rect, confirm*/
+App.module = (function () {
 	"use strict";
 	var Module = {
 		settings: {
@@ -110,6 +110,8 @@
 			this.$modulelist = document.getElementById(this.settings.modulelistElement);
 			this.bindEvents();
 			this.populateColorSelect();
+
+			return this;
 		},
 
 		populateColorSelect: function () {
@@ -160,5 +162,5 @@
 			}, this);
 		}
 	};
-	Module.init();
+	return Module.init();
 }());

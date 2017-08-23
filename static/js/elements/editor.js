@@ -1,6 +1,6 @@
 /*jshint browser: true*/
-/*global EventHandler, Globals */
-(function () {
+/*global App, EventHandler, Globals */
+App.editor = (function () {
 	"use strict";
 	var Editor = {
 		activeRectId: 'active',
@@ -12,7 +12,9 @@
 
 		init: function () {
 			this.$hoverrect = document.getElementById(this.hoverRectId);
-			Editor.bindEvents();
+			this.bindEvents();
+
+			return this;
 		},
 
 		bindEvents: function () {
@@ -76,5 +78,5 @@
 		}
 	};
 
-	Editor.init();
+	return Editor.init();
 }());

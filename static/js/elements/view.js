@@ -1,6 +1,6 @@
 /*jshint browser: true*/
-/*global EventHandler, Globals, Plate */
-(function () {
+/*global App, EventHandler, Globals, Plate */
+App.view = (function () {
 	"use strict";
 	var View = {
 		settings: {
@@ -168,8 +168,10 @@
 			this.$bgrect = document.getElementById(this.settings.bgRectId);
 			this.initSVG();
 			this.bindEvents();
+
+			return this;
 		}
 	};
 
-	View.init();
+	return View.init();
 }());

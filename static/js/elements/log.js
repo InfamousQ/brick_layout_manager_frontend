@@ -1,9 +1,11 @@
-/*global EventHandler, console*/
-(function () {
+/*global App, EventHandler, console*/
+App.log = (function () {
 	"use strict";
 	var Log = {
 		init: function () {
-			Log.bindEvents();
+			this.bindEvents();
+
+			return this;
 		},
 
 		bindEvents: function () {
@@ -11,8 +13,8 @@
 		},
 
 		onErrorMsg: function (e) {
-		console.log(e);
-	}
-};
- Log.init();
+			console.log(e);
+		}
+	};
+	return Log.init();
 }());
