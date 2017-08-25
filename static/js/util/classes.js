@@ -158,49 +158,10 @@ class Baseplate {
 		}
 		this.onchangefunction = onchangefunction;
 
-		let callbackmap = class ListMap extends Map {
-			constructor(callback) {
-				super();
-				this.callback_function = callback;
-			}
-
-			/**
-			 * Adds or updates item specified by key
-			 * @param   {Object} key  Identifying object
-			 * @param   {Object} item Object to save
-			 * @returns {Map} Reference to called object
-			 */
-			set(key, item) {
-				let val = super.set(key, item);
-				this.onSet();
-				return val;
-			}
-
-			/**
-			 * Returns item specified by key
-			 * @param   {Object} key Identifying object
-			 * @returns {?Object} Item specified by key or undefined if no items are found
-			 */
-			delete(key) {
-				let val = super.delete(key);
-				this.onSet();
-				return val;
-			}
-
-			/**
-			 * Calls defined callback_function when there is change in the collection
-			 */
-			onSet() {
-				if (this.callback_function instanceof Function) {
-					this.callback_function();
-				}
-			}
-		};
-
 		/**
 		* @member {Map<number,Plate>} Map of Plates
 		*/
-		this.plates = new callbackmap(onchangefunction);
+		this.plates = new CallbackMap(onchangefunction);
 	}
 
 	/**
@@ -295,7 +256,41 @@ class Baseplate {
 	}
 }
 
-/**
- * Function that will be called if there is change in target collection
- * @callback onChangeFunction
- */
+class CallbackMap extends Map {
+	constructor(callback) {
+		super();
+		this.callback_function = callback;
+	}
+
+	/**
+	 * Adds or updates item specified by key
+	 * @param   {Object} key  Identifying object
+	 * @param   {Object} item Object to save
+	 * @returns {Map} Reference to called object
+	 */
+	set(key, item) {
+		let val = super.set(key, item);
+		this.onSet();
+		return val;
+	}
+
+	/**
+	 * Returns item specified by key
+	 * @param   {Object} key Identifying object
+	 * @returns {?Object} Item specified by key or undefined if no items are found
+	 */
+	delete(key) {
+		let val = super.delete(key);
+		this.onSet();
+		return val;
+	}
+
+	/**
+	 * Calls defined callback_function when there is change in the collection
+	 */
+	onSet() {
+		if (this.callback_function instanceof Function) {
+			this.callback_function();
+		}
+	}
+}
