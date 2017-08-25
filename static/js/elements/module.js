@@ -8,9 +8,6 @@ App.module = (function () {
 			modulelistElement: 'module-list'
 		},
 
-		// Contains SVG Rect representations of Plates. Index is id of representative plate in this.baseplate's collection.
-		// TODO: Do we need this anymore here?
-		rects: [],
 		// Contains Plates. Index is id of plate
 		baseplate: null,
 
@@ -30,7 +27,7 @@ App.module = (function () {
 			data.z = data.id;
 			rect = Rect.fromEvent(data);
 			if (rect === null) {
-					return false;
+				return false;
 			}
 
 			// TODO: Should we generate Plate in Baseplate instead and just handle id here ?
@@ -61,13 +58,13 @@ App.module = (function () {
 		editRect: function (e) {
 			// Get rect data from form that is connected to event e
 			var f = e.target.form,
-				plate_id = parseInt(f.getElementsByClassName('id')[0].textContent),
+				plate_id = parseInt(f.getElementsByClassName('id')[0].textContent, 10),
 				target_plate = this.baseplate.getPlateById(plate_id);
-			target_plate.x = parseInt(f.getElementsByClassName('input-x')[0].value);
-			target_plate.y = parseInt(f.getElementsByClassName('input-y')[0].value);
-			target_plate.z = parseInt(f.getElementsByClassName('input-z')[0].value);
-			target_plate.height = parseInt(f.getElementsByClassName('input-height')[0].value);
-			target_plate.width = parseInt(f.getElementsByClassName('input-width')[0].value);
+			target_plate.x = parseInt(f.getElementsByClassName('input-x')[0].value, 10);
+			target_plate.y = parseInt(f.getElementsByClassName('input-y')[0].value, 10);
+			target_plate.z = parseInt(f.getElementsByClassName('input-z')[0].value, 10);
+			target_plate.height = parseInt(f.getElementsByClassName('input-height')[0].value, 10);
+			target_plate.width = parseInt(f.getElementsByClassName('input-width')[0].value, 10);
 			target_plate.color = f.getElementsByClassName('input-color')[0].value;
 
 			EventHandler.emit(EventHandler.MODULE_VIEW_EDIT_PLATE, target_plate);
@@ -75,7 +72,7 @@ App.module = (function () {
 
 		deleteRect: function (e) {
 			var f = e.target.form,
-				plate_id = parseInt(f.getElementsByClassName('id')[0].textContent) - 1;
+				plate_id = parseInt(f.getElementsByClassName('id')[0].textContent, 10) - 1;
 
 			// TODO: Confirm is a bit ugly hack, we should use some more nicer looking window..
 			// Confirm deletion from user
