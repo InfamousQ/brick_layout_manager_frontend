@@ -24,20 +24,15 @@
 					<rect fill="url(#stud)" id="stud-background-rect" x="0" y="0" width="100%" height="100%" />
 				</svg>
 			</div>
-			<div id="project">
-				<h1>Project</h1>
-				<form id="project-settings" action="">
-					<fieldset>
-						<legend>Size</legend>
-						<label for="project-settings-height">Height in bricks:</label>
-						<input id="project-settings-height" name="height" type="number" value="32"/><br />
-						<label for="project-settings-width">Width in bricks:</label>
-						<input id="project-settings-width" name="width" type="number" value="32"/>
-					</fieldset>
-				</form>
-			</div>
 			<div id="module">
 				<h1>Module</h1>
+				<fieldset>
+						<legend>Size</legend>
+						<label for="module-height">Height in bricks:</label>
+						<input id="module-height" name="height" type="number" value="32"/><br />
+						<label for="module-width">Width in bricks:</label>
+						<input id="module-width" name="width" type="number" value="32"/>
+				</fieldset>
 				<ul id="module-list">
 					<li class="skeleton">
 						<a class="show-edit-module-form">Plate #<span class="id"></span> - X:<span class="x"></span> Y:<span class="y"></span> Z:<span class="z"></span> W:<span class="w"></span> H:<span class="h"></span></a>
@@ -67,7 +62,6 @@
 		<script type="text/javascript" src="static/js/elements/view.js"></script>
 		<script type="text/javascript" src="static/js/elements/editor.js"></script>
 		<script type="text/javascript" src="static/js/elements/module.js"></script>
-		<script type="text/javascript" src="static/js/elements/project.js"></script>
 		<script type="text/javascript" src="static/js/elements/log.js"></script>
 	</body>
 </html>

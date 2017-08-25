@@ -11,8 +11,7 @@ var EventHandler = {
 	MODULE_VIEW_GENERATE_PLATE: 'module_view_generate_plate',
 	MODULE_VIEW_EDIT_PLATE: 'module_view_edit_rect',
 	MODULE_VIEW_DELETE_PLATE: 'module_view_delete_rect',
-
-	PROJECT_CHANGE_SETTINGS: 'project_change_settings',
+	MODULE_VIEW_EDIT_SIZE: 'module_view_edit_size',
 
 	ERROR_MSG: 'error_msg',
 	// Event mapping

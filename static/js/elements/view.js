@@ -29,7 +29,7 @@ App.view = (function () {
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_POINT, View.generatePoint.bind(this));
 			EventHandler.listen(EventHandler.MODULE_VIEW_EDIT_PLATE, View.editPlate.bind(this));
 			EventHandler.listen(EventHandler.MODULE_VIEW_DELETE_PLATE, View.deletePlate.bind(this));
-			EventHandler.listen(EventHandler.PROJECT_CHANGE_SETTINGS, View.readSettings.bind(this));
+			EventHandler.listen(EventHandler.MODULE_VIEW_EDIT_SIZE, View.readSettings.bind(this));
 		},
 
 		clickToEditor: function (event) {

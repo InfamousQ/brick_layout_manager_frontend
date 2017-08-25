@@ -44,7 +44,7 @@ class Rect {
 		if (!r.hasOwnProperty('y') || r.y < 0) {
 			return false;
 		}
-		if (!r.hasOwnProperty('z') || r.z < 0) {
+		if (!r.hasOwnProperty('z') || r.z < 0) {
 			return false;
 		}
 		if (!r.hasOwnProperty('height') || r.height < 1) {
@@ -61,11 +61,11 @@ class Rect {
 			return null;
 		}
 
-		if (undefined === data.start || undefined === data.start.x || undefined === data.start.y) {
+		if (undefined === data.start || undefined === data.start.x || undefined === data.start.y) {
 			return null;
 		}
 
-		if (undefined === data.end || undefined === data.end.x || undefined === data.end.y) {
+		if (undefined === data.end || undefined === data.end.x || undefined === data.end.y) {
 			return null;
 		}
 
