@@ -27,6 +27,7 @@ App.view = (function () {
 
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_PLATE, View.generateBox.bind(this));
 			EventHandler.listen(EventHandler.VIEW_GRID_GENERATE_POINT, View.generatePoint.bind(this));
+			EventHandler.listen(EventHandler.VIEW_GRID_RESET, View.reset.bind(this));
 			EventHandler.listen(EventHandler.MODULE_VIEW_EDIT_PLATE, View.editPlate.bind(this));
 			EventHandler.listen(EventHandler.MODULE_VIEW_DELETE_PLATE, View.deletePlate.bind(this));
 			EventHandler.listen(EventHandler.MODULE_VIEW_EDIT_SIZE, View.readSettings.bind(this));
@@ -159,6 +160,12 @@ App.view = (function () {
 			this.$bgrect.setAttribute('height', newHeight);
 			this.$bgrect.setAttribute('width', newWidth);
 			// TODO: This must clip other rects!
+		},
+
+		reset: function () {
+			Array.from(this.$svg_rect_container.getElementsByTagName('rect')).forEach( function (r) {
+				r.remove();
+			});
 		},
 
 		init: function () {

@@ -152,16 +152,21 @@ class Baseplate {
 	 * Creates Baseplate
 	 * @param {onChangeFunction} Function that will be called when there is change in Plates.
 	 */
-	constructor(onchangefunction) {
-		if (!(onchangefunction instanceof Function)) {
-			throw 'Baseplate constructor requires callback function as parameter';
-		}
-		this.onchangefunction = onchangefunction;
-
+	constructor(id, onchangefunction = null) {
+		/**
+		* @member {Integer} Id of Baseplate
+		**/
+		this.id = id;
 		/**
 		* @member {Map<number,Plate>} Map of Plates
 		*/
-		this.plates = new CallbackMap(onchangefunction);
+		this.plates = new CallbackMap((onchangefunction instanceof Function) ? onchangefunction : null);
+	}
+
+	setOnChangeFunction(onchangefunction) {
+		if (onchangefunction instanceof Function) {
+			this.plates.setOnCallbackFunction(onchangefunction);
+		}
 	}
 
 	/**
@@ -254,6 +259,14 @@ class Baseplate {
 	getPlates() {
 		return this.plates.values();
 	}
+
+	getCopy() {
+		let copy = new Baseplate(this.id);
+		Array.from(this.plates.values()).forEach(function (p) {
+			copy.addPlate(p);
+		});
+		return copy;
+	}
 }
 
 class CallbackMap extends Map {
@@ -291,6 +304,16 @@ class CallbackMap extends Map {
 	onSet() {
 		if (this.callback_function instanceof Function) {
 			this.callback_function();
+		}
+	}
+
+	/**
+	 * Set callback function
+	 * @param    {Function} oncallback Callback function
+	 */
+	setOnCallbackFunction(oncallbackfunction) {
+		if (oncallbackfunction instanceof Function) {
+			this.callback_function = oncallbackfunction;
 		}
 	}
 }

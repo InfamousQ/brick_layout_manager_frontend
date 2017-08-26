@@ -7,11 +7,14 @@ var EventHandler = {
 	VIEW_GRID_CLICK: 'view_grid_click',
 	VIEW_GRID_GENERATE_PLATE: 'view_grid_generate_plate',
 	VIEW_GRID_GENERATE_POINT: 'view_grid_generate_point',
+	VIEW_GRID_RESET: 'view_grid_reset',
 
 	MODULE_VIEW_GENERATE_PLATE: 'module_view_generate_plate',
 	MODULE_VIEW_EDIT_PLATE: 'module_view_edit_rect',
 	MODULE_VIEW_DELETE_PLATE: 'module_view_delete_rect',
 	MODULE_VIEW_EDIT_SIZE: 'module_view_edit_size',
+
+	MODULES_SAVE_BASEPLATE: 'modules_save_baseplate',
 
 	ERROR_MSG: 'error_msg',
 	// Event mapping

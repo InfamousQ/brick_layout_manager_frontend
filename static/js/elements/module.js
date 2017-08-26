@@ -14,6 +14,7 @@ App.module = (function () {
 
 		// Contains Plates. Index is id of plate
 		baseplate: null,
+		baseplate_is_modified: false,
 
 		$module: null,
 		$inputHeightInBricks: null,
@@ -65,7 +66,13 @@ App.module = (function () {
 			}
 			this.baseplate.addPlate(plate);
 			EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_PLATE, plate);
+
+			// Mark baseplate as modified
+			if (this.baseplate_is_modified === false) {
+				this.baseplate_is_modified = true;
+			}
 		},
+
 
 		isRectDataValid: function (data) {
 			if (!data.hasOwnProperty('start') || !data.hasOwnProperty('end')) {
@@ -94,6 +101,11 @@ App.module = (function () {
 			target_plate.color = f.getElementsByClassName('input-color')[0].value;
 
 			EventHandler.emit(EventHandler.MODULE_VIEW_EDIT_PLATE, target_plate);
+
+			// Mark baseplate as modified
+			if (this.baseplate_is_modified === false) {
+				this.baseplate_is_modified = true;
+			}
 		},
 
 		deleteRect: function (e) {
@@ -112,6 +124,11 @@ App.module = (function () {
 			this.baseplate.remotePlateById(plate_id);
 
 			EventHandler.emit(EventHandler.MODULE_VIEW_DELETE_PLATE, plate_id);
+
+			// Mark baseplate as modified
+			if (this.baseplate_is_modified === false) {
+				this.baseplate_is_modified = true;
+			}
 		},
 
 		toggleEditForm: function (e) {
@@ -127,8 +144,7 @@ App.module = (function () {
 			f.style.display = ('block' === f.style.display) ? 'none' : 'block';
 		},
 
-		init: function () {
-			this.baseplate = new Baseplate(this.populatePlateList.bind(this));
+		init: function (baseplate_id = 0) {
 			this.$module = document.getElementById(this.settings.moduleElement);
 			this.$modulelist = document.getElementById(this.settings.modulelistElement);
 			this.$inputHeightInBricks = document.getElementById(this.settings.inputHeightInBricksID);
@@ -137,8 +153,51 @@ App.module = (function () {
 			this.sendSettings();
 			this.bindEvents();
 			this.populateColorSelect();
-
+			this.setBaseplate(baseplate_id);
 			return this;
+		},
+
+		setBaseplate(baseplate_id = 0) {
+			if (baseplate_id > 0) {
+				if (baseplate_id === this.baseplate.id) {
+					// Baseplate is already shown
+					return;
+				} else {
+					// TODO: Nasty coupling here, figure out another way to do this
+					// If baseplate_id is given, we get the _copy_ of that baseplate. Map usually returns a direct reference to the item in Map but we do not want that.
+					this.baseplate = App.modules.storage.baseplates.get(baseplate_id).getCopy();
+					// Reset view and create baseplate's existing plates.
+					EventHandler.emit(EventHandler.VIEW_GRID_RESET, null);
+					Array.from(this.baseplate.plates.values()).forEach(function (p) {
+						EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_PLATE, p);
+					});
+				}
+			} else {
+				this.baseplate = new Baseplate(0);
+			}
+			this.baseplate_is_modified = false;
+			this.baseplate.setOnChangeFunction(this.populatePlateList.bind(this));
+			this.populatePlateList();
+		},
+
+		allowRouting(baseplate_id) {
+			if (baseplate_id == this.baseplate.id) {
+				return true;
+			} else {
+				if (this.baseplate_is_modified) {
+					// Current baseplate is modified, confirm if user wants to save before changing baseplate
+					if (window.confirm('Currently shown Module is modified, do you wish to save it before changing to new Module?')) {
+						EventHandler.emit(EventHandler.MODULES_SAVE_BASEPLATE, this.baseplate);
+						return true;
+					} else {
+						// User does not want to save, cancel routing.
+						return false;
+					}
+				} else {
+					// Baseplate is not changed, allow routing
+				}
+				return true;
+			}
 		},
 
 		populateColorSelect: function () {
