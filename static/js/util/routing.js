@@ -28,8 +28,8 @@ const Routing = {
 		switch (new_hash) {
 			case 'baseplate':
 				const new_baseplate_id = parseInt(hash_params[0], 10);
-				if (App.module.allowRouting(new_baseplate_id)) {
-					App.module.setBaseplate(new_baseplate_id);
+				if (App.baseplate_view.allowRouting(new_baseplate_id)) {
+					App.baseplate_view.setBaseplate(new_baseplate_id);
 				} else {
 					return false;
 				}
