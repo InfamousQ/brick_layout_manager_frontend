@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 /*global App, EventHandler, document, CallbackMap, Baseplate, Plate, Rect */
-App.modules = (function () {
+App.baseplate_list = (function () {
 	"use strict";
 	class Storage {
 		constructor (onchangefunction) {
@@ -47,12 +47,12 @@ App.modules = (function () {
 			// TESTING - Loading initial baseplates to storage
 			let modules = [];
 				const bp1 = new Baseplate(1, function() {});
-				bp1.addPlate(new Plate(new Rect(0, 20, 20, 1, 20, 20)));
-				bp1.addPlate(new Plate(new Rect(1, 40, 40, 2, 20, 20)));
+				bp1.addPlate(new Plate(new Rect(1, 20, 20, 1, 20, 20)));
+				bp1.addPlate(new Plate(new Rect(2, 40, 40, 2, 20, 20)));
 			modules.push(bp1);
 				const bp2 = new Baseplate(2, function() {});
-				bp2.addPlate(new Plate(new Rect(0, 60, 60, 1, 20, 20)));
-				bp2.addPlate(new Plate(new Rect(1, 80, 80, 2, 20, 20)));
+				bp2.addPlate(new Plate(new Rect(1, 60, 60, 1, 20, 20)));
+				bp2.addPlate(new Plate(new Rect(2, 80, 80, 2, 20, 20)));
 			modules.push(bp2);
 			this.storage.loadArray(modules);
 			// END TESTING
@@ -73,7 +73,7 @@ App.modules = (function () {
 				// Add Baseplate information
 				li.classList.remove('skeleton');
 				li.getElementsByClassName('id')[0].textContent = bp.id;
-				li.getElementsByTagName('a')[0].setAttribute('href', '#module-' + bp.id);
+				li.getElementsByTagName('a')[0].setAttribute('href', '#baseplate-' + bp.id);
 				this.$baseplatelist.appendChild(li);
 			}, this);
 		},

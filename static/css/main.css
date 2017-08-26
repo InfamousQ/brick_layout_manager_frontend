@@ -5,5 +5,5 @@
 /* Then, files that handle look of individual elements */
 @import url('elements/navbar.css');
 @import url('elements/view.css');
-@import url('elements/module.css');
-@import url('elements/modules.css');
+@import url('elements/baseplate.css');
+@import url('elements/baseplates.css');

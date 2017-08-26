@@ -7,10 +7,10 @@
 			<div id="navbar">
 				<h1>Layout Manager</h1>
 			</div>
-			<div id="modules">
-				<h1>List of available modules</h1>
+			<div id="baseplates">
+				<h1>List of available baseplates</h1>
 				<ul id="baseplate-list">
-					<li class="skeleton"><a>Module #<span class="id"></span></a></li>
+					<li class="skeleton"><a>Baseplate #<span class="id"></span></a></li>
 				</ul>
 			</div>
 			<div id="view">
@@ -30,19 +30,19 @@
 					<rect fill="url(#stud)" id="stud-background-rect" x="0" y="0" width="100%" height="100%" />
 				</svg>
 			</div>
-			<div id="module">
-				<h1>Module</h1>
+			<div id="baseplate-view">
+				<h1>Baseplate</h1>
 				<fieldset>
 						<legend>Size</legend>
-						<label for="module-height">Height in bricks:</label>
-						<input id="module-height" name="height" type="number" value="32"/><br />
-						<label for="module-width">Width in bricks:</label>
-						<input id="module-width" name="width" type="number" value="32"/>
+						<label for="baseplate-height">Height in bricks:</label>
+						<input id="baseplate-height" name="height" type="number" value="32"/><br />
+						<label for="baseplate-width">Width in bricks:</label>
+						<input id="baseplate-width" name="width" type="number" value="32"/>
 				</fieldset>
-				<ul id="module-list">
+				<ul id="plate-list">
 					<li class="skeleton">
-						<a class="show-edit-module-form">Plate #<span class="id"></span> - X:<span class="x"></span> Y:<span class="y"></span> Z:<span class="z"></span> W:<span class="w"></span> H:<span class="h"></span></a>
-						<form class="edit-module-form">
+						<a class="show-edit-plate-form">Plate #<span class="id"></span> - X:<span class="x"></span> Y:<span class="y"></span> Z:<span class="z"></span> W:<span class="w"></span> H:<span class="h"></span></a>
+						<form class="edit-plate-form">
 							<fieldset>
 								<legend>Plate #<span class="id"></span></legend>
 								<label>X:<input type="number" class="input-x" name="x"/></label><br />
@@ -65,10 +65,10 @@
 		<script type="text/javascript" src="static/js/util/classes.js"></script>
 		<script type="text/javascript" src="static/js/util/eventhandler.js"></script>
 		<script type="text/javascript" src="static/js/elements/app.js"></script>
-		<script type="text/javascript" src="static/js/elements/modules.js"></script>
+		<script type="text/javascript" src="static/js/elements/baseplates.js"></script>
 		<script type="text/javascript" src="static/js/elements/view.js"></script>
 		<script type="text/javascript" src="static/js/elements/editor.js"></script>
-		<script type="text/javascript" src="static/js/elements/module.js"></script>
+		<script type="text/javascript" src="static/js/elements/baseplate.js"></script>
 		<script type="text/javascript" src="static/js/elements/log.js"></script>
 		<script type="text/javascript" src="static/js/util/routing.js"></script>
 	</body>
