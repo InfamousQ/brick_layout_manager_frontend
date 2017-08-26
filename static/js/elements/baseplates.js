@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 /*global App, EventHandler, document, CallbackMap, Baseplate, Plate, Rect */
-App.modules = (function () {
+App.baseplate_list = (function () {
 	"use strict";
 	class Storage {
 		constructor (onchangefunction) {

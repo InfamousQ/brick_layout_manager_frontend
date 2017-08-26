@@ -165,7 +165,7 @@ App.module = (function () {
 				} else {
 					// TODO: Nasty coupling here, figure out another way to do this
 					// If baseplate_id is given, we get the _copy_ of that baseplate. Map usually returns a direct reference to the item in Map but we do not want that.
-					this.baseplate = App.modules.storage.baseplates.get(baseplate_id).getCopy();
+					this.baseplate = App.baseplate_list.storage.baseplates.get(baseplate_id).getCopy();
 					// Reset view and create baseplate's existing plates.
 					EventHandler.emit(EventHandler.VIEW_GRID_RESET, null);
 					Array.from(this.baseplate.plates.values()).forEach(function (p) {
