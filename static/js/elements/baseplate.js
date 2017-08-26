@@ -4,10 +4,10 @@ App.baseplate_view = (function () {
 	"use strict";
 	var BaseplateView = {
 		settings: {
-			moduleElement: 'module',
-			modulelistElement: 'module-list',
-			inputHeightInBricksID: 'module-height',
-			inputWidthInBricksID: 'module-width',
+			baseplateViewElement: 'baseplate-view',
+			plateListElement: 'plate-list',
+			inputHeightInBricksID: 'baseplate-height',
+			inputWidthInBricksID: 'baseplate-width',
 			heightInBricks: 32, // Initial value, updated when settings are updated
 			widthInBricks: 32 // Initial value, updated when settings are updated
 		},
@@ -16,7 +16,8 @@ App.baseplate_view = (function () {
 		active_baseplate: null,
 		baseplate_is_modified: false,
 
-		$module: null,
+		$view: null,
+		$plateList: null,
 		$inputHeightInBricks: null,
 		$inputWidthInBricks: null,
 
@@ -140,13 +141,13 @@ App.baseplate_view = (function () {
 			} else {
 				li = e.target.parentElement;
 			}
-			f = li.getElementsByClassName('edit-module-form')[0];
+			f = li.getElementsByClassName('edit-plate-form')[0];
 			f.style.display = ('block' === f.style.display) ? 'none' : 'block';
 		},
 
 		init: function (baseplate_id = 0) {
-			this.$module = document.getElementById(this.settings.moduleElement);
-			this.$modulelist = document.getElementById(this.settings.modulelistElement);
+			this.$view = document.getElementById(this.settings.baseplateViewElement);
+			this.$plateList = document.getElementById(this.settings.plateListElement);
 			this.$inputHeightInBricks = document.getElementById(this.settings.inputHeightInBricksID);
 			this.$inputWidthInBricks = document.getElementById(this.settings.inputWidthInBricksID);
 
@@ -216,14 +217,14 @@ App.baseplate_view = (function () {
 		 */
 		populatePlateList: function () {
 			// Remove existing li-elements excluding the skeleton
-			Array.from(this.$modulelist.querySelectorAll("li:not(.skeleton)")).forEach(function (li) {
+			Array.from(this.$plateList.querySelectorAll("li:not(.skeleton)")).forEach(function (li) {
 				li.remove();
 			});
 
 			// Generate new li-element for each plate in this.active_baseplate. li-element contains both short info text and edit form
 			Array.from(this.active_baseplate.getPlates()).forEach(function (plate) {
 				// Copy skeleton li
-				var li = this.$modulelist.getElementsByClassName('skeleton')[0].cloneNode(true);
+				var li = this.$plateList.getElementsByClassName('skeleton')[0].cloneNode(true);
 				// Add Plate information to the info span
 				li.classList.remove('skeleton');
 				li.id = "module-" + plate.id;
@@ -233,7 +234,7 @@ App.baseplate_view = (function () {
 				li.getElementsByClassName('z')[0].textContent = plate.z;
 				li.getElementsByClassName('w')[0].textContent = plate.width;
 				li.getElementsByClassName('h')[0].textContent = plate.height;
-				li.getElementsByClassName('show-edit-module-form')[0].onclick = this.toggleEditForm.bind(this);
+				li.getElementsByClassName('show-edit-plate-form')[0].onclick = this.toggleEditForm.bind(this);
 				// Add Plate information to the editing form
 				li.getElementsByClassName('id')[1].textContent = plate.id;
 				li.getElementsByClassName('input-x')[0].value = plate.x;
@@ -241,9 +242,9 @@ App.baseplate_view = (function () {
 				li.getElementsByClassName('input-z')[0].value = plate.z;
 				li.getElementsByClassName('input-height')[0].value = plate.height;
 				li.getElementsByClassName('input-width')[0].value = plate.width;
-				this.$modulelist.appendChild(li);
+				this.$plateList.appendChild(li);
 				// Note: Add event to dynamically created form
-				li.getElementsByClassName('edit-module-form')[0].onchange = this.editRect.bind(this);
+				li.getElementsByClassName('edit-plate-form')[0].onchange = this.editRect.bind(this);
 				li.getElementsByClassName('input-delete')[0].onclick = this.deleteRect.bind(this);
 			}, this);
 		}

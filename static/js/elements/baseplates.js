@@ -47,12 +47,12 @@ App.baseplate_list = (function () {
 			// TESTING - Loading initial baseplates to storage
 			let modules = [];
 				const bp1 = new Baseplate(1, function() {});
-				bp1.addPlate(new Plate(new Rect(0, 20, 20, 1, 20, 20)));
-				bp1.addPlate(new Plate(new Rect(1, 40, 40, 2, 20, 20)));
+				bp1.addPlate(new Plate(new Rect(1, 20, 20, 1, 20, 20)));
+				bp1.addPlate(new Plate(new Rect(2, 40, 40, 2, 20, 20)));
 			modules.push(bp1);
 				const bp2 = new Baseplate(2, function() {});
-				bp2.addPlate(new Plate(new Rect(0, 60, 60, 1, 20, 20)));
-				bp2.addPlate(new Plate(new Rect(1, 80, 80, 2, 20, 20)));
+				bp2.addPlate(new Plate(new Rect(1, 60, 60, 1, 20, 20)));
+				bp2.addPlate(new Plate(new Rect(2, 80, 80, 2, 20, 20)));
 			modules.push(bp2);
 			this.storage.loadArray(modules);
 			// END TESTING
