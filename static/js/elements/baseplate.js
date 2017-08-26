@@ -159,25 +159,45 @@ App.baseplate_view = (function () {
 		},
 
 		setBaseplate(baseplate_id = 0) {
-			if (baseplate_id > 0) {
+				// TODO: Nasty coupling here, figure out another way to do this
+			if (App.baseplate_list.storage.baseplates.has(baseplate_id)) {
 				if (baseplate_id === this.active_baseplate.id) {
 					// Baseplate is already shown
 					return;
 				} else {
-					// TODO: Nasty coupling here, figure out another way to do this
 					// If baseplate_id is given, we get the _copy_ of that baseplate. Map usually returns a direct reference to the item in Map but we do not want that.
 					this.active_baseplate = App.baseplate_list.storage.baseplates.get(baseplate_id).getCopy();
 					// Reset view and create baseplate's existing plates.
-					EventHandler.emit(EventHandler.VIEW_GRID_RESET, null);
-					Array.from(this.active_baseplate.plates.values()).forEach(function (p) {
-						EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_PLATE, p);
-					});
+
 				}
 			} else {
-				this.active_baseplate = new Baseplate(0);
+				if (baseplate_id > 0) {
+					// Route to new baseplate view
+				window.location = window.location.origin + window.location.pathname + "#baseplate-0";
+				} else {
+					this.active_baseplate = new Baseplate(0);
+				}
 			}
+
+			// Reset view and data related to active baseplate
+			EventHandler.emit(EventHandler.VIEW_GRID_RESET, null);
+			Array.from(this.active_baseplate.plates.values()).forEach(function (p) {
+				EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_PLATE, p);
+				});
 			this.active_baseplate_is_modified = false;
 			this.active_baseplate.setOnChangeFunction(this.populatePlateList.bind(this));
+			if (this.active_baseplate.id > 0) {
+				const active_p = this.$view.getElementsByClassName('edit-baseplate')[0];
+				active_p.style.display = "block";
+				active_p.getElementsByClassName('id')[0].textContent = this.active_baseplate.id;
+				const deactive_p = this.$view.getElementsByClassName('new-baseplate')[0];
+				deactive_p.style.display = "none";
+			} else {
+				const active_p = this.$view.getElementsByClassName('new-baseplate')[0];
+				active_p.style.display = "block";
+				const deactive_p = this.$view.getElementsByClassName('edit-baseplate')[0];
+				deactive_p.style.display = "none";
+			}
 			this.populatePlateList();
 		},
 

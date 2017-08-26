@@ -9,3 +9,7 @@
 .edit-plate-form {
 	display: none;
 }
+
+#baseplate-view p {
+	display: none;
+}

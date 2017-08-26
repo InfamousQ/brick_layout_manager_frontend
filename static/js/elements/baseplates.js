@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-/*global App, EventHandler, document, CallbackMap, Baseplate, Plate, Rect */
+/*global App, EventHandler, document, CallbackMap, Baseplate, Plate, Rect, window */
 App.baseplate_list = (function () {
 	"use strict";
 	class Storage {
@@ -32,17 +32,24 @@ App.baseplate_list = (function () {
 	const Modules = {
 		settings: {
 			baseplatelistElement: 'baseplate-list',
+			addBaseplateButtonElement: 'add-baseplate',
 		},
 
 		storage: null,
 
 		$baseplatelist: null,
+		$addBaseplateButton: null,
+
+		bindEvents: function() {
+			this.$addBaseplateButton.onclick = this.addBaseplate.bind(this);
+
+			EventHandler.listen(EventHandler.MODULES_SAVE_BASEPLATE, this.saveBaseplate.bind(this));
+		},
 
 		init: function () {
 			this.storage = new Storage(this.onStorageUpdate.bind(this));
 			this.$baseplatelist = document.getElementById(this.settings.baseplatelistElement);
-
-			EventHandler.listen(EventHandler.MODULES_SAVE_BASEPLATE, this.saveBaseplate.bind(this));
+			this.$addBaseplateButton = document.getElementById(this.settings.addBaseplateButtonElement);
 
 			// TESTING - Loading initial baseplates to storage
 			let modules = [];
@@ -56,6 +63,8 @@ App.baseplate_list = (function () {
 			modules.push(bp2);
 			this.storage.loadArray(modules);
 			// END TESTING
+
+			this.bindEvents();
 
 			return this;
 		},
@@ -76,6 +85,11 @@ App.baseplate_list = (function () {
 				li.getElementsByTagName('a')[0].setAttribute('href', '#baseplate-' + bp.id);
 				this.$baseplatelist.appendChild(li);
 			}, this);
+		},
+
+		addBaseplate: function() {
+			// Route to new baseplate view
+			window.location = window.location.origin + window.location.pathname + "#baseplate-0";
 		},
 
 		// Save/update Baseplate
