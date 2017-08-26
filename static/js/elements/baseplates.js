@@ -73,7 +73,7 @@ App.modules = (function () {
 				// Add Baseplate information
 				li.classList.remove('skeleton');
 				li.getElementsByClassName('id')[0].textContent = bp.id;
-				li.getElementsByTagName('a')[0].setAttribute('href', '#module-' + bp.id);
+				li.getElementsByTagName('a')[0].setAttribute('href', '#baseplate-' + bp.id);
 				this.$baseplatelist.appendChild(li);
 			}, this);
 		},

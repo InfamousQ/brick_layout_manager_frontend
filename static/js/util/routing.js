@@ -26,7 +26,7 @@ const Routing = {
 
 		// Routing initialization
 		switch (new_hash) {
-			case 'module':
+			case 'baseplate':
 				const new_baseplate_id = parseInt(hash_params[0], 10);
 				if (App.module.allowRouting(new_baseplate_id)) {
 					App.module.setBaseplate(new_baseplate_id);
