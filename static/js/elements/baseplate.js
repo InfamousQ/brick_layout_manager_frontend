@@ -6,6 +6,7 @@ App.baseplate_view = (function () {
 		settings: {
 			baseplateViewElement: 'baseplate-view',
 			plateListElement: 'plate-list',
+			saveButtonElement: 'save-baseplate',
 			inputHeightInBricksID: 'baseplate-height',
 			inputWidthInBricksID: 'baseplate-width',
 			heightInBricks: 32, // Initial value, updated when settings are updated
@@ -14,16 +15,18 @@ App.baseplate_view = (function () {
 
 		// Contains Plates. Index is id of plate
 		active_baseplate: null,
-		baseplate_is_modified: false,
+		active_baseplate_is_modified: false,
 
 		$view: null,
 		$plateList: null,
+		$saveButton: null,
 		$inputHeightInBricks: null,
 		$inputWidthInBricks: null,
 
 		bindEvents: function () {
 			this.$inputHeightInBricks.onchange = this.sendSettings.bind(this);
 			this.$inputWidthInBricks.onchange = this.sendSettings.bind(this);
+			this.$saveButton.onclick = this.saveBaseplate.bind(this);
 
 			EventHandler.listen(EventHandler.MODULE_VIEW_EDIT_SIZE, this.changeSettings.bind(this));
 			EventHandler.listen(EventHandler.MODULE_VIEW_GENERATE_PLATE, this.generatePlate.bind(this));
@@ -148,6 +151,7 @@ App.baseplate_view = (function () {
 		init: function (baseplate_id = 0) {
 			this.$view = document.getElementById(this.settings.baseplateViewElement);
 			this.$plateList = document.getElementById(this.settings.plateListElement);
+			this.$saveButton = document.getElementById(this.settings.saveButtonElement);
 			this.$inputHeightInBricks = document.getElementById(this.settings.inputHeightInBricksID);
 			this.$inputWidthInBricks = document.getElementById(this.settings.inputWidthInBricksID);
 
@@ -201,7 +205,22 @@ App.baseplate_view = (function () {
 			this.populatePlateList();
 		},
 
-		allowRouting(baseplate_id) {
+		saveBaseplate: function() {
+			if (this.active_baseplate_is_modified === false) {
+				// Currently open baseplate is not modified, save is not necessary
+				return;
+			}
+
+			// Currently open baseplate is modified, save it.
+			EventHandler.emit(EventHandler.MODULES_SAVE_BASEPLATE, this.active_baseplate);
+			// TODO: need a nicer dialog
+			window.alert('Baseplate #' + this.active_baseplate.id + " saved");
+			this.active_baseplate_is_modified = false;
+			// Direct user to saved baseplate's edit view
+			window.location = window.location.origin + window.location.pathname + "#baseplate-" + this.active_baseplate.id;
+		},
+
+		allowRouting: function(baseplate_id) {
 			if (baseplate_id == this.active_baseplate.id) {
 				return true;
 			} else {

@@ -163,6 +163,9 @@ App.view = (function () {
 		},
 
 		reset: function () {
+			Array.from(this.$svg_point_container.getElementsByTagName('rect')).forEach( function (r) {
+				r.remove();
+			});
 			Array.from(this.$svg_rect_container.getElementsByTagName('rect')).forEach( function (r) {
 				r.remove();
 			});

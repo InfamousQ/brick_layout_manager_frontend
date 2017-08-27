@@ -22,6 +22,7 @@ App.editor = (function () {
 			EventHandler.listen(EventHandler.VIEW_GRID_MOUSE_IN, Editor.onMouseIn.bind(this));
 			EventHandler.listen(EventHandler.VIEW_GRID_MOUSE_MOVE, Editor.onMouseMove.bind(this));
 			EventHandler.listen(EventHandler.VIEW_GRID_MOUSE_OUT, Editor.onMouseOut.bind(this));
+			EventHandler.listen(EventHandler.VIEW_GRID_RESET, this.reset.bind(this));
 		},
 
 		onClick: function (e) {
@@ -71,6 +72,11 @@ App.editor = (function () {
 
 		onMouseOut: function (e) {
 			this.$hoverrect.style.display = 'none';
+		},
+
+		reset: function (e) {
+			this.startPoint = null;
+			this.endPoint = null;
 		},
 
 		inBricks: function (pixel_value) {
