@@ -7,6 +7,7 @@ App.baseplate_view = (function () {
 			baseplateViewElement: 'baseplate-view',
 			plateListElement: 'plate-list',
 			saveButtonElement: 'save-baseplate',
+			deleteButtonElement: 'delete-baseplate',
 			inputHeightInBricksID: 'baseplate-height',
 			inputWidthInBricksID: 'baseplate-width',
 			heightInBricks: 32, // Initial value, updated when settings are updated
@@ -20,13 +21,15 @@ App.baseplate_view = (function () {
 		$view: null,
 		$plateList: null,
 		$saveButton: null,
+		$deleteButton: null,
 		$inputHeightInBricks: null,
 		$inputWidthInBricks: null,
 
 		bindEvents: function () {
 			this.$inputHeightInBricks.onchange = this.sendSettings.bind(this);
 			this.$inputWidthInBricks.onchange = this.sendSettings.bind(this);
-			this.$saveButton.onclick = this.saveBaseplate.bind(this);
+			this.$saveButton.onclick = this.saveActiveBaseplate.bind(this);
+			this.$deleteButton.onclick = this.deleteActiveBaseplate.bind(this);
 
 			EventHandler.listen(EventHandler.MODULE_VIEW_EDIT_SIZE, this.changeSettings.bind(this));
 			EventHandler.listen(EventHandler.MODULE_VIEW_GENERATE_PLATE, this.generatePlate.bind(this));
@@ -152,6 +155,7 @@ App.baseplate_view = (function () {
 			this.$view = document.getElementById(this.settings.baseplateViewElement);
 			this.$plateList = document.getElementById(this.settings.plateListElement);
 			this.$saveButton = document.getElementById(this.settings.saveButtonElement);
+			this.$deleteButton = document.getElementById(this.settings.deleteButtonElement);
 			this.$inputHeightInBricks = document.getElementById(this.settings.inputHeightInBricksID);
 			this.$inputWidthInBricks = document.getElementById(this.settings.inputWidthInBricksID);
 
@@ -205,7 +209,7 @@ App.baseplate_view = (function () {
 			this.populatePlateList();
 		},
 
-		saveBaseplate: function() {
+		saveActiveBaseplate: function() {
 			if (this.active_baseplate_is_modified === false) {
 				// Currently open baseplate is not modified, save is not necessary
 				return;
@@ -220,6 +224,23 @@ App.baseplate_view = (function () {
 			window.location = window.location.origin + window.location.pathname + "#baseplate-" + this.active_baseplate.id;
 		},
 
+		deleteActiveBaseplate: function() {
+			if (this.active_baseplate.id === 0) {
+				// TODO: Create nicer dialog system
+				// Generating new baseplate, do not allow deleting
+				window.alert('Cannot delete new baseplate');
+				return;
+			}
+
+			if (!window.confirm("Are you sure you wish to delete baseplate #" + this.active_baseplate.id)) {
+				return;
+			}
+			// Send deletion message
+			EventHandler.emit(EventHandler.MODULES_DELETE_BASEPLATE_BY_ID, this.active_baseplate.id);
+			// Direct user to new baseplate's edit view
+			window.location = window.location.origin + window.location.pathname + "#baseplate-0";
+		},
+
 		allowRouting: function(baseplate_id) {
 			if (baseplate_id == this.active_baseplate.id) {
 				return true;
@@ -230,11 +251,16 @@ App.baseplate_view = (function () {
 						EventHandler.emit(EventHandler.MODULES_SAVE_BASEPLATE, this.active_baseplate);
 						return true;
 					} else {
-						// User does not want to save, cancel routing.
-						return false;
+						// User does not want to save, ask if user wants to open new baseplate anyway
+						if (window.confirm('Modifications to currently shown Baseplate are not saved, are you sure you want to open new Baseplate?')) {
+							return true;
+						} else {
+							return false;
+						}
 					}
 				} else {
 					// Baseplate is not changed, allow routing
+					return true;
 				}
 				return true;
 			}

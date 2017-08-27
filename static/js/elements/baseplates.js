@@ -44,6 +44,7 @@ App.baseplate_list = (function () {
 			this.$addBaseplateButton.onclick = this.addBaseplate.bind(this);
 
 			EventHandler.listen(EventHandler.MODULES_SAVE_BASEPLATE, this.saveBaseplate.bind(this));
+			EventHandler.listen(EventHandler.MODULES_DELETE_BASEPLATE_BY_ID, this.deleteBaseplate.bind(this));
 		},
 
 		init: function () {
@@ -101,8 +102,15 @@ App.baseplate_list = (function () {
 				baseplate.id = this.storage.getNextId();
 			}
 			this.storage.baseplates.set(baseplate.id, baseplate);
-		}
+		},
 
+		deleteBaseplate: function(baseplate_id) {
+			if (this.storage.baseplates.has(baseplate_id)) {
+				this.storage.baseplates.delete(baseplate_id);
+			} else {
+				EventHandler.emit(EventHandler.ERROR_MSG, 'BaseplateList - trying to delete non-existing baseplate #' + baseplate_id);
+			}
+		}
 	};
 	return Modules.init();
 }());

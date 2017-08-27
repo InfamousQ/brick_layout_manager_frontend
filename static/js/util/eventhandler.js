@@ -15,6 +15,7 @@ var EventHandler = {
 	MODULE_VIEW_EDIT_SIZE: 'module_view_edit_size',
 
 	MODULES_SAVE_BASEPLATE: 'modules_save_baseplate',
+	MODULES_DELETE_BASEPLATE_BY_ID: 'modules_delete_baseplate_by_id',
 
 	ERROR_MSG: 'error_msg',
 	// Event mapping
