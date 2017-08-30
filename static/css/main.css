@@ -4,6 +4,5 @@
 @import url('layout/portrait.css') all and (orientation: portrait);
 /* Then, files that handle look of individual elements */
 @import url('elements/navbar.css');
-@import url('elements/view.css');
-@import url('elements/baseplate.css');
-@import url('elements/baseplates.css');
+@import url('elements/baseplate-view.css');
+@import url('elements/baseplate-list.css');
