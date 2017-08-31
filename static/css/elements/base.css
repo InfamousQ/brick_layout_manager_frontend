@@ -1,0 +1,8 @@
+.element {
+	display: none;
+}
+
+.element-active {
+	display: block;
+	background-color: red !important;
+}

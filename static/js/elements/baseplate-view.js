@@ -4,7 +4,8 @@ App.baseplate_view = (function () {
 	"use strict";
 	var BaseplateView = {
 		settings: {
-			baseplateViewElement: 'baseplate-view',
+			mainDiv: 'baseplate-edit',
+			baseplateDataElement: 'baseplate-data',
 			plateListElement: 'plate-list',
 			saveButtonElement: 'save-baseplate',
 			deleteButtonElement: 'delete-baseplate',
@@ -18,7 +19,7 @@ App.baseplate_view = (function () {
 		active_baseplate: null,
 		active_baseplate_is_modified: false,
 
-		$view: null,
+		$data: null,
 		$plateList: null,
 		$saveButton: null,
 		$deleteButton: null,
@@ -152,7 +153,7 @@ App.baseplate_view = (function () {
 		},
 
 		init: function (baseplate_id = 0) {
-			this.$view = document.getElementById(this.settings.baseplateViewElement);
+			this.$data = document.getElementById(this.settings.baseplateDataElement);
 			this.$plateList = document.getElementById(this.settings.plateListElement);
 			this.$saveButton = document.getElementById(this.settings.saveButtonElement);
 			this.$deleteButton = document.getElementById(this.settings.deleteButtonElement);
@@ -195,15 +196,15 @@ App.baseplate_view = (function () {
 			this.active_baseplate_is_modified = false;
 			this.active_baseplate.setOnChangeFunction(this.populatePlateList.bind(this));
 			if (this.active_baseplate.id > 0) {
-				const active_p = this.$view.getElementsByClassName('edit-baseplate')[0];
+				const active_p = this.$data.getElementsByClassName('edit-baseplate')[0];
 				active_p.style.display = "block";
 				active_p.getElementsByClassName('id')[0].textContent = this.active_baseplate.id;
-				const deactive_p = this.$view.getElementsByClassName('new-baseplate')[0];
+				const deactive_p = this.$data.getElementsByClassName('new-baseplate')[0];
 				deactive_p.style.display = "none";
 			} else {
-				const active_p = this.$view.getElementsByClassName('new-baseplate')[0];
+				const active_p = this.$data.getElementsByClassName('new-baseplate')[0];
 				active_p.style.display = "block";
-				const deactive_p = this.$view.getElementsByClassName('edit-baseplate')[0];
+				const deactive_p = this.$data.getElementsByClassName('edit-baseplate')[0];
 				deactive_p.style.display = "none";
 			}
 			this.populatePlateList();

@@ -3,80 +3,91 @@
 		<link rel="stylesheet" type="text/css" href="static/css/main.css" />
 	</head>
 	<body>
-		<div class="grid-container">
+		<div id="app-container">
+
 			<div id="navbar">
 				<h1>Layout Manager</h1>
+				<nav>
+					<ul>
+						<li><a href="#list">Collection</a></li>
+						<li><a href="#baseplate">Baseplate</li></a>
+					</ul>
+				</nav>
 			</div>
-			<div id="baseplates">
+
+			<div id="baseplate-list" class="element">
 				<h1>List of available baseplates</h1>
-				<ul id="baseplate-list">
+				<ul id="baseplate-collection">
 					<li class="skeleton"><a>Baseplate #<span class="id"></span></a></li>
 				</ul>
 				<button id="add-baseplate">Create new Baseplate</button>
 			</div>
-			<div id="view">
-				<svg id="snap" width="100%" height="100%" xmlns="http://www.w3.org">
-					<defs>
-						<pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-							<path d="M 0 0 L 20 0 20 20 0 20 z" stroke="gainsboro" stroke-width="1" fill="silver"></path>
-						</pattern>
-						<pattern id="stud" width="20" height="20" patternUnits="userSpaceOnUse">
-							<circle cx="10" cy="10" r="6" stroke="black" stroke-width="2" stroke-opacity="0.1" fill="none" />
-						</pattern>
-					</defs>
-					<rect fill="url(#grid)" id="background-rect" x="0" y="0" width="100%" height="100%" />
-					<g id="rect-container" />
-					<rect id="hover-rect" x="0" y="0" width="20" height="20" fill="orange" fill-opacity="0.5" />
-					<g id="point-container" />
-					<rect fill="url(#stud)" id="stud-background-rect" x="0" y="0" width="100%" height="100%" />
-				</svg>
-			</div>
-			<div id="baseplate-view">
-				<h1>Baseplate</h1>
-				<p class="edit-baseplate">ID:<span class="id"></span></p>
-				<p class="new-baseplate">New baseplate!</p>
-				<fieldset>
-					<legend>Actions</legend>
-					<button id="save-baseplate">Save</button>
-					<button id="delete-baseplate">Delete</button>
-				</fieldset>
-				<fieldset>
-					<legend>Size</legend>
-					<label for="baseplate-height">Height in bricks:</label>
-					<input id="baseplate-height" name="height" type="number" value="32"/><br />
-					<label for="baseplate-width">Width in bricks:</label>
-					<input id="baseplate-width" name="width" type="number" value="32"/>
-				</fieldset>
-				<ul id="plate-list">
-					<li class="skeleton">
-						<a class="show-edit-plate-form">Plate #<span class="id"></span> - X:<span class="x"></span> Y:<span class="y"></span> Z:<span class="z"></span> W:<span class="w"></span> H:<span class="h"></span></a>
-						<form class="edit-plate-form">
-							<fieldset>
-								<legend>Plate #<span class="id"></span></legend>
-								<label>X:<input type="number" class="input-x" name="x"/></label><br />
-								<label>Y:<input type="number" class="input-y" name="y" value=""/></label><br />
-								<label>Z:<input type="number" class="input-z" name="z" value=""/></label><br />
-								<label>Height:<input type="number" class="input-height" name="height"/></label><br />
-								<label>Width:<input type="number" class="input-width" name="width" /></label><br />
-								<label>Color:
-									<select class="input-color">
-									</select>
-								</label><br />
-								<input type="button" class="input-delete" value="Delete" />
-							</fieldset>
-						</form>
-					</li>
-				</ul>
+
+			<div id="baseplate-edit" class="element">
+				<div id="baseplate-view">
+					<svg id="baseplate-svg" width="100%" height="100%" xmlns="http://www.w3.org">
+						<defs>
+							<pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+								<path d="M 0 0 L 20 0 20 20 0 20 z" stroke="gainsboro" stroke-width="1" fill="silver"></path>
+							</pattern>
+							<pattern id="stud" width="20" height="20" patternUnits="userSpaceOnUse">
+								<circle cx="10" cy="10" r="6" stroke="black" stroke-width="2" stroke-opacity="0.1" fill="none" />
+							</pattern>
+						</defs>
+						<rect fill="url(#grid)" id="background-rect" x="0" y="0" width="100%" height="100%" />
+						<g id="rect-container" />
+						<rect id="hover-rect" x="0" y="0" width="20" height="20" fill="orange" fill-opacity="0.5" />
+						<g id="point-container" />
+						<rect fill="url(#stud)" id="stud-background-rect" x="0" y="0" width="100%" height="100%" />
+					</svg>
+				</div>
+				<div id="baseplate-data">
+					<h1>Baseplate</h1>
+					<p class="edit-baseplate">ID:<span class="id"></span></p>
+					<p class="new-baseplate">New baseplate!</p>
+					<fieldset>
+						<legend>Actions</legend>
+						<button id="save-baseplate">Save</button>
+						<button id="delete-baseplate">Delete</button>
+					</fieldset>
+					<fieldset>
+						<legend>Size</legend>
+						<label for="baseplate-height">Height in bricks:</label>
+						<input id="baseplate-height" name="height" type="number" value="32"/><br />
+						<label for="baseplate-width">Width in bricks:</label>
+						<input id="baseplate-width" name="width" type="number" value="32"/>
+					</fieldset>
+					<ul id="plate-list">
+						<li class="skeleton">
+							<a class="show-edit-plate-form">Plate #<span class="id"></span> - X:<span class="x"></span> Y:<span class="y"></span> Z:<span class="z"></span> W:<span class="w"></span> H:<span class="h"></span></a>
+							<form class="edit-plate-form">
+								<fieldset>
+									<legend>Plate #<span class="id"></span></legend>
+									<label>X:<input type="number" class="input-x" name="x"/></label><br />
+									<label>Y:<input type="number" class="input-y" name="y" value=""/></label><br />
+									<label>Z:<input type="number" class="input-z" name="z" value=""/></label><br />
+									<label>Height:<input type="number" class="input-height" name="height"/></label><br />
+									<label>Width:<input type="number" class="input-width" name="width" /></label><br />
+									<label>Color:
+										<select class="input-color">
+										</select>
+									</label><br />
+									<input type="button" class="input-delete" value="Delete" />
+								</fieldset>
+							</form>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		<script type="text/javascript" src="static/js/util/globals.js"></script>
 		<script type="text/javascript" src="static/js/util/classes.js"></script>
 		<script type="text/javascript" src="static/js/util/eventhandler.js"></script>
 		<script type="text/javascript" src="static/js/elements/app.js"></script>
-		<script type="text/javascript" src="static/js/elements/baseplates.js"></script>
+		<script type="text/javascript" src="static/js/elements/baseplate-list.js"></script>
 		<script type="text/javascript" src="static/js/elements/view.js"></script>
 		<script type="text/javascript" src="static/js/elements/editor.js"></script>
-		<script type="text/javascript" src="static/js/elements/baseplate.js"></script>
+		<script type="text/javascript" src="static/js/elements/baseplate-view.js"></script>
 		<script type="text/javascript" src="static/js/elements/log.js"></script>
 		<script type="text/javascript" src="static/js/util/routing.js"></script>
 	</body>

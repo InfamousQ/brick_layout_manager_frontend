@@ -4,7 +4,7 @@ App.view = (function () {
 	"use strict";
 	var View = {
 		settings: {
-			svgElement: 'snap',
+			svgElement: 'baseplate-svg',
 			activeRectId: 'activeRect',
 			bgRectId: 'background-rect'
 		},

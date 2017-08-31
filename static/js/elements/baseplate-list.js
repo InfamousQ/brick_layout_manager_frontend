@@ -31,7 +31,8 @@ App.baseplate_list = (function () {
 
 	const Modules = {
 		settings: {
-			baseplatelistElement: 'baseplate-list',
+			mainDiv: 'baseplate-list',
+			baseplatelistElement: 'baseplate-collection',
 			addBaseplateButtonElement: 'add-baseplate',
 		},
 
