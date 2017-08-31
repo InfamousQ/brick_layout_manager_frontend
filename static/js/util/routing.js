@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-/*global window, App, EventHandler */
+/*global window, document, App, EventHandler */
 const Routing = {
 	init: function () {
 		window.onload = this.onLoad.bind(this);
@@ -29,13 +29,30 @@ const Routing = {
 			case 'baseplate':
 				const new_baseplate_id = parseInt(hash_params[0], 10);
 				if (App.baseplate_view.allowRouting(new_baseplate_id)) {
+					this.setAsMainDiv(App.baseplate_view);
 					App.baseplate_view.setBaseplate(new_baseplate_id);
 				} else {
 					return false;
 				}
 				break;
+			case 'list':
+				this.setAsMainDiv(App.baseplate_list);
+				break;
 			default:
 				EventHandler.emit(EventHandler.ERROR_MSG, "Unknown hash: " + new_hash);
+		}
+	},
+
+	setAsMainDiv: function (target_module) {
+		for (let module of Object.values(App)) {
+			if (module.settings === undefined || module.settings.mainDiv === undefined) {
+				continue;
+			}
+			if (module === target_module) {
+				document.getElementById(module.settings.mainDiv).classList.add('element-active');
+			} else {
+				document.getElementById(module.settings.mainDiv).classList.remove('element-active');
+			}
 		}
 	}
 };

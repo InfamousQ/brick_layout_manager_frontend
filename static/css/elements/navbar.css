@@ -1,3 +1,31 @@
 #navbar {
 	background-color: grey;
 }
+
+#navbar ul {
+	list-style: none;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+}
+
+#navbar ul li {
+	display: inline-block;
+	width: 120px;
+	line-height: 40px;
+	height: 40px;
+}
+
+#navbar ul li a {
+	text-decoration: none;
+	display: block;
+	color: black;
+}
+
+#navbar ul li a:hover {
+	background-color: cornflowerblue;
+}
+
+#navbar ul li a.active {
+	background-color: darkturquoise;
+}

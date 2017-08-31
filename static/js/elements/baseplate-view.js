@@ -4,6 +4,7 @@ App.baseplate_view = (function () {
 	"use strict";
 	var BaseplateView = {
 		settings: {
+			mainDiv: 'baseplate-edit',
 			baseplateDataElement: 'baseplate-data',
 			plateListElement: 'plate-list',
 			saveButtonElement: 'save-baseplate',
