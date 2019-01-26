@@ -38,6 +38,9 @@ const Routing = {
 			case 'list':
 				this.setAsMainDiv(App.baseplate_list);
 				break;
+			case 'login':
+				this.setAsMainDiv(App.login);
+				break;
 			default:
 				EventHandler.emit(EventHandler.ERROR_MSG, "Unknown hash: " + new_hash);
 		}
@@ -54,6 +57,7 @@ const Routing = {
 				document.getElementById(module.settings.mainDiv).classList.remove('element-active');
 			}
 		}
+		target_module.onActivation();
 	}
 };
 Routing.init();

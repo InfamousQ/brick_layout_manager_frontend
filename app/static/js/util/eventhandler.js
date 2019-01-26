@@ -17,6 +17,11 @@ var EventHandler = {
 	MODULES_SAVE_BASEPLATE: 'modules_save_baseplate',
 	MODULES_DELETE_BASEPLATE_BY_ID: 'modules_delete_baseplate_by_id',
 
+	USER_INIT: 'user_init',
+	USER_RENDER_PROVIDERS: 'user_render_providers',
+
+	API_GET_PROVIDERS: 'api_get_providers',
+
 	ERROR_MSG: 'error_msg',
 	// Event mapping
 	handlers: [],
