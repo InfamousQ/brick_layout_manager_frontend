@@ -29,3 +29,7 @@
 #navbar ul li a.active {
 	background-color: darkturquoise;
 }
+
+#navbar ul li.hidden {
+	display: none;
+}

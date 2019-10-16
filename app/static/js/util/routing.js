@@ -41,6 +41,9 @@ const Routing = {
 			case 'login':
 				this.setAsMainDiv(App.login);
 				break;
+			case 'user':
+				this.setAsMainDiv(App.user);
+				break;
 			default:
 				EventHandler.emit(EventHandler.ERROR_MSG, "Unknown hash: " + new_hash);
 		}

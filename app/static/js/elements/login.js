@@ -9,6 +9,7 @@ App.login = (function () {
 
 		},
 
+		$mainDiv: null,
 		$providerlist: null,
 		$authWindow: null,
 
@@ -16,6 +17,7 @@ App.login = (function () {
 		authWindowPollInterval: null,
 
 		init: function() {
+			this.$mainDiv = document.getElementById(this.settings.mainDiv);
 			this.$providerlist = document.getElementById(this.settings.providerListElement);
 
 			this.bindEvents();
@@ -27,18 +29,33 @@ App.login = (function () {
 			this.$providerlist.onclick = this.onAuthLinkClick.bind(this);
 			window.onmessage = this.onAuthWindowResponse.bind(this);
 
-			EventHandler.listen(EventHandler.USER_RENDER_PROVIDERS, this.renderProviders.bind(this));
-			EventHandler.listen(EventHandler.USER_INIT, this.onActivation.bind(this));
+			EventHandler.listen(EventHandler.LOGIN_INIT, this.onActivation.bind(this));
 		},
 
-		renderProviders: function (event_data) {
+		onActivation: function (event) {
+			// First, check if API token is already set. If so, move to #user
+			if (API.hasJWTToken()) {
+				console.debug('token is valid, move to #user');
+				window.location.hash = 'user';
+				return;
+			}
+
+			API.fetchProviders().then(this.renderProviders.bind(this));
+		},
+
+		renderProviders: function (providers_array) {
 			// Remove existing li-elements excluding the skeleton
 			Array.from(this.$providerlist.querySelectorAll("li:not(.skeleton)")).forEach(function (li) {
 				li.remove();
 			});
 
+			if (!providers_array) {
+				console.debug('No providers provided in event_data');
+				return;
+			}
+
 			// Generate new li-element for each baseplate in this.baseplates. li-elements contains link that opens baseplate in edit view.
-			Array.from(event_data).forEach(function (provider) {
+			Array.from(providers_array).forEach(function (provider) {
 				let provider_item = this.$providerlist.getElementsByClassName('skeleton')[0].cloneNode(true);
 				provider_item.classList.remove('skeleton');
 				// Add Provider information
@@ -49,10 +66,6 @@ App.login = (function () {
 				provider_icon.alt = provider.name;
 				this.$providerlist.appendChild(provider_item);
 			}, this);
-		},
-
-		onActivation: function (event) {
-			EventHandler.emit(EventHandler.API_GET_PROVIDERS, []);
 		},
 
 		onAuthLinkClick: function (event) {
@@ -77,51 +90,19 @@ App.login = (function () {
 		},
 
 		onAuthWindowResponse: function (event) {
-			if (event.origin === 'https://api.lmanager.test' && 'token' in event.data) {
+			if ('token' in event.data) {
 				let api_token = event.data.token;
-				console.log('Api token fetched: ' + api_token);
 				this.resetPoll();
+
+				// Check validity of token. If valid, redirect to #user
+				API.setJWTToken(api_token)
+					.then( function (jwt_token_is_valid) {
+						if (jwt_token_is_valid) {
+							window.location.hash = 'user';
+						}
+					});
 			}
-		}
+		},
 	};
 	return Login.init();
 }());
-
-/**
-
- function Go() {
-    var child = window.open("child.html", "_blank", "height=200,width=200");
-
-    var leftDomain = false;
-    var interval = setInterval(function() {
-        try {
-            if (child.document.domain === document.domain)
-            {
-                if (leftDomain && child.document.readyState === "complete")
-                {
-                    // we're here when the child window returned to our domain
-                    clearInterval(interval);
-                    alert("returned: " + child.document.URL);
-                    child.postMessage({ message: "requestResult" }, "*");
-                }
-            }
-            else {
-                // this code should never be reached,
-                // as the x-site security check throws
-                // but just in case
-                leftDomain = true;
-            }
-        }
-        catch(e) {
-            // we're here when the child window has been navigated away or closed
-            if (child.closed) {
-                clearInterval(interval);
-                alert("closed");
-                return;
-            }
-            // navigated to another domain
-            leftDomain = true;
-        }
-    }, 500);
-}
- **/
