@@ -26,11 +26,11 @@ const API = {
 		});
 
 		return fetch(user_api_request)
+			.then(this.checkResponseValidity)
 			.then(function (response) {
 				return response.json();
-			}).then(
-				this.checkJWTTokenValidity
-			).then(function(user_data_obj) {
+			}).then(this.checkJWTTokenValidity)
+			.then(function(user_data_obj) {
 				// User data is okey, save JWT for later use
 				localStorage.setItem('user.token', jwt_token);
 				return true;
@@ -59,13 +59,65 @@ const API = {
 		});
 
 		return fetch(user_api_request)
+			.then(this.checkResponseValidity)
 			.then(function (response) {
 				return response.json();
-			}).then(
-				this.checkJWTTokenValidity
-			).catch( function(response) {
-			EventHandler.emit(EventHandler.ERROR_MSG, 'Could not connect to API endpoint "' + this.API_URL + 'api/v1/user"');return null;
+			}).then(this.checkJWTTokenValidity)
+			.catch( function(response) {
+			EventHandler.emit(EventHandler.ERROR_MSG, 'Could not connect to API endpoint "' + user_api_request.url);
+			return null;
 		});
+	},
+
+	saveUserDataFetch: function(user_data) {
+		// Try to fetch user data from API
+		let user_api_request = new Request(this.API_URL + 'api/v1/user/' + user_data.id, {
+			method: 'POST',
+			headers: new Headers({
+				'Authorization': 'Bearer ' + localStorage.getItem('user.token'),
+				'Content-Type': 'application/json',
+			}),
+			body: JSON.stringify(user_data),
+		});
+
+		return fetch(user_api_request)
+			.then(this.checkResponseValidity)
+			.then( function(response) {
+				return response.json;
+			}).then(this.checkJWTTokenValidity)
+			.catch( function(response) {
+				EventHandler.emit(EventHandler.ERROR_MSG, 'Could not connect to API endpoint "' + user_api_request.url);
+			})
+	},
+
+	fetchPublicLayouts: function() {
+		return Promise.resolve([
+			{
+				id: 1,
+				name: 'sample 1',
+				img: 'test.test.test/sample1',
+				href: 'test.test.test/api/v1/layout/1',
+			},
+			{
+				id: 2,
+				name: 'sample 2',
+				img: 'test.test.test/sample2',
+				href: 'test.test.test/api/v1/layout/2',
+			},
+			{
+				id: 3,
+				name: 'sample 3',
+				img: 'test.test.test/sample2',
+				href: 'test.test.test/api/v1/layout/3',
+			},
+		]);
+	},
+
+	checkResponseValidity: function (response) {
+		if (!response.ok) {
+			throw Error(response.statusText);
+		}
+		return response;
 	},
 
 	checkJWTTokenValidity: function (response_json) {

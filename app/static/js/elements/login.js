@@ -6,7 +6,6 @@ App.login = (function () {
 		settings: {
 			mainDiv: 'login',
 			providerListElement: 'list-providers',
-
 		},
 
 		$mainDiv: null,

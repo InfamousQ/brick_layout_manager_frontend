@@ -11,12 +11,25 @@
 				<h1>Layout Manager</h1>
 				<nav>
 					<ul>
-						<li><a href="#list">Collection</a></li>
-						<li><a href="#baseplate">Baseplate</a></li>
+						<li><a href="#layouts">Layouts</a></li>
+						<li>Layout editor</li>
+						<li><a href="#list">Modules</a></li>
+						<li><a href="#baseplate">Module editor</a></li>
 						<li class="on-user-deactive"><a href="#login">Login</a></li>
 						<li class="on-user-active"><a href="#user">User</a></li>
 					</ul>
 				</nav>
+			</div>
+
+			<div id="layouts" class="element">
+				<h1>List of available layouts</h1>
+				<div id="list-layouts">
+					<div class="skeleton layout" data-layout-id="">
+						<img class="layout-img" src="" alt=""/>
+						<span class="layout-name"></span>
+						<button class="layout-activate">Edit layout</button>
+					</div>
+				</div>
 			</div>
 
 			<div id="baseplate-list" class="element">
@@ -96,7 +109,7 @@
 			<div id="user" class="element">
 				<div id="user-view">
 					Active user's data:
-					<form action="javascript:void(0);">
+					<form>
 						<fieldset>
 							<div>
 								<label for="user-id">Id</label>
@@ -114,6 +127,14 @@
 							</div>
 						</fieldset>
 					</form>
+					<div id="user-view-layouts">
+						Active user's layouts:
+						<div class="skeleton layout" data-layout-id="">
+							<img class="layout-img" src="" alt=""/>
+							<span class="layout-name"></span>
+							<button class="layout-activate">Edit layout</button>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -125,6 +146,7 @@
 		<script type="text/javascript" src="static/js/util/api.js"></script>
 		<script type="text/javascript" src="static/js/elements/login.js"></script>
 		<script type="text/javascript" src="static/js/elements/user.js"></script>
+		<script type="text/javascript" src="static/js/elements/layouts.js"></script>
 		<script type="text/javascript" src="static/js/elements/baseplate-list.js"></script>
 		<script type="text/javascript" src="static/js/elements/view.js"></script>
 		<script type="text/javascript" src="static/js/elements/editor.js"></script>

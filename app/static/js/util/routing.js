@@ -26,6 +26,9 @@ const Routing = {
 
 		// Routing initialization
 		switch (new_hash) {
+			case 'layouts':
+				this.setAsMainDiv(App.layouts);
+				break;
 			case 'baseplate':
 				const new_baseplate_id = parseInt(hash_params[0], 10);
 				if (App.baseplate_view.allowRouting(new_baseplate_id)) {
@@ -56,11 +59,11 @@ const Routing = {
 			}
 			if (module === target_module) {
 				document.getElementById(module.settings.mainDiv).classList.add('element-active');
+				target_module.onActivation();
 			} else {
 				document.getElementById(module.settings.mainDiv).classList.remove('element-active');
 			}
 		}
-		target_module.onActivation();
 	}
 };
 Routing.init();

@@ -71,6 +71,10 @@ App.baseplate_list = (function () {
 			return this;
 		},
 
+		onActivation: function () {
+
+		},
+
 		// When Storage is edited, re-populate list of available baseplates
 		onStorageUpdate: function () {
 			// Remove existing li-elements excluding the skeleton
