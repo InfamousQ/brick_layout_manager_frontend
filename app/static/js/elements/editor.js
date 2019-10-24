@@ -2,7 +2,7 @@
 /*global App, EventHandler, Globals */
 App.editor = (function () {
 	"use strict";
-	var Editor = {
+	const Editor = {
 		activeRectId: 'active',
 		hoverRectId: 'hover-rect',
 		startPoint: null,

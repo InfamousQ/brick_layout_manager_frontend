@@ -26,6 +26,12 @@ const Routing = {
 
 		// Routing initialization
 		switch (new_hash) {
+			case 'layouteditor':
+				this.setAsMainDiv(App.layout_editor);
+				break;
+			case 'layouts':
+				this.setAsMainDiv(App.layouts);
+				break;
 			case 'baseplate':
 				const new_baseplate_id = parseInt(hash_params[0], 10);
 				if (App.baseplate_view.allowRouting(new_baseplate_id)) {
@@ -37,6 +43,12 @@ const Routing = {
 				break;
 			case 'list':
 				this.setAsMainDiv(App.baseplate_list);
+				break;
+			case 'login':
+				this.setAsMainDiv(App.login);
+				break;
+			case 'user':
+				this.setAsMainDiv(App.user);
 				break;
 			default:
 				EventHandler.emit(EventHandler.ERROR_MSG, "Unknown hash: " + new_hash);
@@ -50,6 +62,7 @@ const Routing = {
 			}
 			if (module === target_module) {
 				document.getElementById(module.settings.mainDiv).classList.add('element-active');
+				target_module.onActivation();
 			} else {
 				document.getElementById(module.settings.mainDiv).classList.remove('element-active');
 			}

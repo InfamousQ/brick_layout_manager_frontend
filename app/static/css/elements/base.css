@@ -6,3 +6,11 @@
 	display: block;
 	background-color: red !important;
 }
+
+.element-hidden {
+	display: none;
+}
+
+.hidden {
+	display: none;
+}

@@ -26,6 +26,21 @@ App.baseplate_view = (function () {
 		$inputHeightInBricks: null,
 		$inputWidthInBricks: null,
 
+		init: function (baseplate_id = 0) {
+			this.$data = document.getElementById(this.settings.baseplateDataElement);
+			this.$plateList = document.getElementById(this.settings.plateListElement);
+			this.$saveButton = document.getElementById(this.settings.saveButtonElement);
+			this.$deleteButton = document.getElementById(this.settings.deleteButtonElement);
+			this.$inputHeightInBricks = document.getElementById(this.settings.inputHeightInBricksID);
+			this.$inputWidthInBricks = document.getElementById(this.settings.inputWidthInBricksID);
+
+			this.sendSettings();
+			this.bindEvents();
+			this.populateColorSelect();
+			this.setBaseplate(baseplate_id);
+			return this;
+		},
+
 		bindEvents: function () {
 			this.$inputHeightInBricks.onchange = this.sendSettings.bind(this);
 			this.$inputWidthInBricks.onchange = this.sendSettings.bind(this);
@@ -34,6 +49,10 @@ App.baseplate_view = (function () {
 
 			EventHandler.listen(EventHandler.MODULE_VIEW_EDIT_SIZE, this.changeSettings.bind(this));
 			EventHandler.listen(EventHandler.MODULE_VIEW_GENERATE_PLATE, this.generatePlate.bind(this));
+		},
+
+		onActivation: function () {
+
 		},
 
 		sendSettings: function (event) {
@@ -150,21 +169,6 @@ App.baseplate_view = (function () {
 			}
 			f = li.getElementsByClassName('edit-plate-form')[0];
 			f.style.display = ('block' === f.style.display) ? 'none' : 'block';
-		},
-
-		init: function (baseplate_id = 0) {
-			this.$data = document.getElementById(this.settings.baseplateDataElement);
-			this.$plateList = document.getElementById(this.settings.plateListElement);
-			this.$saveButton = document.getElementById(this.settings.saveButtonElement);
-			this.$deleteButton = document.getElementById(this.settings.deleteButtonElement);
-			this.$inputHeightInBricks = document.getElementById(this.settings.inputHeightInBricksID);
-			this.$inputWidthInBricks = document.getElementById(this.settings.inputWidthInBricksID);
-
-			this.sendSettings();
-			this.bindEvents();
-			this.populateColorSelect();
-			this.setBaseplate(baseplate_id);
-			return this;
 		},
 
 		setBaseplate(baseplate_id = 0) {
