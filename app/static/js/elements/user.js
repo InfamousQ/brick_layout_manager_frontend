@@ -100,9 +100,10 @@ App.user = (function() {
 				let layout_name = layout_item.getElementsByClassName('layout-name')[0];
 				layout_name.innerHTML = layout.name;
 				let layout_activate_button = layout_item.getElementsByClassName('layout-activate')[0];
+				layout_activate_button.setAttribute('data-layout-id', layout.id);
 				layout_activate_button.onclick = this.onActivateLayout;
 				this.$userLayoutsDiv.appendChild(layout_item);
-			});
+			}.bind(this));
 		},
 
 		saveUserData: function (onclick_event) {
@@ -139,7 +140,9 @@ App.user = (function() {
 
 		onActivateLayout: function (event) {
 			event.preventDefault();
-			console.log('going to activate layout');
+			let target_layout_id = event.target.getAttribute('data-layout-id');
+			EventHandler.emit(EventHandler.LAYOUT_EDITOR_SET_LAYOUT, target_layout_id);
+			window.location.hash = 'layouteditor';
 		},
 	};
 	return User.init();

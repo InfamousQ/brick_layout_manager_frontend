@@ -17,6 +17,8 @@ var EventHandler = {
 	MODULES_SAVE_BASEPLATE: 'modules_save_baseplate',
 	MODULES_DELETE_BASEPLATE_BY_ID: 'modules_delete_baseplate_by_id',
 
+	LAYOUT_EDITOR_SET_LAYOUT: 'layout_editor_set_layout',
+
 	LOGIN_INIT: 'login_init',
 	LOGIN_RENDER_PROVIDERS: 'login_render_providers',
 

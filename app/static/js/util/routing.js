@@ -26,6 +26,9 @@ const Routing = {
 
 		// Routing initialization
 		switch (new_hash) {
+			case 'layouteditor':
+				this.setAsMainDiv(App.layout_editor);
+				break;
 			case 'layouts':
 				this.setAsMainDiv(App.layouts);
 				break;

@@ -64,9 +64,11 @@ const API = {
 				return response.json();
 			}).then(this.checkJWTTokenValidity)
 			.catch( function(response) {
-			EventHandler.emit(EventHandler.ERROR_MSG, 'Could not connect to API endpoint "' + user_api_request.url);
-			return null;
-		});
+				// TODO: This might not be right way to handle this for now..
+				localStorage.removeItem('user.token');
+				EventHandler.emit(EventHandler.ERROR_MSG, 'Could not connect to API endpoint "' + user_api_request.url);
+				return null;
+			});
 	},
 
 	saveUserDataFetch: function(user_data) {
@@ -86,6 +88,8 @@ const API = {
 				return response.json;
 			}).then(this.checkJWTTokenValidity)
 			.catch( function(response) {
+				// TODO: This might not be right way to handle this for now..
+				localStorage.removeItem('user.token');
 				EventHandler.emit(EventHandler.ERROR_MSG, 'Could not connect to API endpoint "' + user_api_request.url);
 			})
 	},

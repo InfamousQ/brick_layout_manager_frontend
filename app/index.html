@@ -12,7 +12,7 @@
 				<nav>
 					<ul>
 						<li><a href="#layouts">Layouts</a></li>
-						<li>Layout editor</li>
+						<li><a href="#layouteditor">Layout editor<span id="layout-editor-active-layout-id"></span></a></li>
 						<li><a href="#list">Modules</a></li>
 						<li><a href="#baseplate">Module editor</a></li>
 						<li class="on-user-deactive"><a href="#login">Login</a></li>
@@ -30,6 +30,11 @@
 						<button class="layout-activate">Edit layout</button>
 					</div>
 				</div>
+			</div>
+
+			<div id="layout-editor">
+				<h1>Editor layout</h1>
+				<p>Layout data will be here</p>
 			</div>
 
 			<div id="baseplate-list" class="element">
@@ -132,7 +137,7 @@
 						<div class="skeleton layout" data-layout-id="">
 							<img class="layout-img" src="" alt=""/>
 							<span class="layout-name"></span>
-							<button class="layout-activate">Edit layout</button>
+							<button class="layout-activate" data-layout-id="">Edit layout</button>
 						</div>
 					</div>
 				</div>
@@ -147,6 +152,7 @@
 		<script type="text/javascript" src="static/js/elements/login.js"></script>
 		<script type="text/javascript" src="static/js/elements/user.js"></script>
 		<script type="text/javascript" src="static/js/elements/layouts.js"></script>
+		<script type="text/javascript" src="static/js/elements/layout-editor.js"></script>
 		<script type="text/javascript" src="static/js/elements/baseplate-list.js"></script>
 		<script type="text/javascript" src="static/js/elements/view.js"></script>
 		<script type="text/javascript" src="static/js/elements/editor.js"></script>
