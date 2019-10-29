@@ -53,7 +53,7 @@ App.login = (function () {
 				return;
 			}
 
-			// Generate new li-element for each baseplate in this.baseplates. li-elements contains link that opens baseplate in edit view.
+			// Generate new li-element for each baseplate in this.modules. li-elements contains link that opens baseplate in edit view.
 			Array.from(providers_array).forEach(function (provider) {
 				let provider_item = this.$providerlist.getElementsByClassName('skeleton')[0].cloneNode(true);
 				provider_item.classList.remove('skeleton');

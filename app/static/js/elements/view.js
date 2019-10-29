@@ -2,9 +2,9 @@
 /*global App, EventHandler, Globals, Plate */
 App.view = (function () {
 	"use strict";
-	var View = {
+	const View = {
 		settings: {
-			svgElement: 'baseplate-svg',
+			svgElement: 'module-svg',
 			activeRectId: 'activeRect',
 			bgRectId: 'background-rect'
 		},
@@ -78,7 +78,8 @@ App.view = (function () {
 			rect.setAttributeNS(null, 'y', r.y);
 			rect.setAttributeNS(null, 'height', r.height);
 			rect.setAttributeNS(null, 'width', r.width);
-			rect.setAttributeNS(null, 'fill', r.color);
+			const color_data = App.module_editor.getColorData(r.color_id);
+			rect.setAttributeNS(null, 'fill', '#' + color_data.hex);
 			// Note: rects are drawn to Rect container
 			this.$svg_rect_container.appendChild(rect);
 
@@ -100,7 +101,8 @@ App.view = (function () {
 			rect.setAttributeNS(null, 'y', r.y);
 			rect.setAttributeNS(null, 'height', r.height);
 			rect.setAttributeNS(null, 'width', r.width);
-			rect.setAttributeNS(null, 'fill', r.color);
+			// TODO: Move this connection between Module-editor and view!
+			rect.setAttributeNS(null, 'fill', '#' + App.module_editor.color_list[r.color_id].hex);
 			// Note: rects are drawn to Rect container
 			// Move SVG Rect to right index
 			var target_z = r.z;
