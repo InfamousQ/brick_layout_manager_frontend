@@ -2,35 +2,35 @@
 /*global Globals, EventHandler */
 
 class Rect {
-	constructor(id, x, y, z, h, w, c = Globals.COLORS.default) {
+	constructor(id, x, y, z, h, w, c = Globals.COLOR_ID) {
 		/**
-		 * @member {number} Id of Rect
+		 * @member {number} id - Id of Rect
 		 */
 		this.id = id;
 		/**
-		 * @member {number} X position of Rect.
+		 * @member {number} x - X position of Rect.
 		 */
 		this.x = x;
 		/**
-		 * @member {number} Y position of Rect.
+		 * @member {number} y - Y position of Rect.
 		 */
 		this.y = y;
 		/**
-		 * @member {number} Z-index position of Rect
+		 * @member {number} z - Z-index position of Rect
 		 */
 		this.z = z;
 		/**
-		 * @member {number} Height of Rect.
+		 * @member {number} height -  Height of Rect.
 		 */
 		this.height = h;
 		/**
-		 * @member {number} Width of Rect.
+		 * @member {number} width -  Width of Rect.
 		 */
 		this.width = w;
 		/**
-		 * @member {String} Color of Rect in hex.
+		 * @member {int} color_id - Color of Rect in hex.
 		 */
-		this.color = c;
+		this.color_id = c;
 	}
 
 	static isValidRect(r) {
@@ -79,7 +79,7 @@ class Rect {
 
 /**
  * Plate is SVG Rect that displays single square region in the SVG.
- * In LEGO terms, builders add Plates on top of Baseplate to structure their Module
+ * In LEGO terms, builders add Plates on top of Module to structure their Module
  * Note: each dimension is in studs, to calculate SVG position use toRect()
  */
 class Plate {
@@ -93,33 +93,38 @@ class Plate {
 		}
 
 		/**
-		 * @member {number} Id of Plate
+		 * @member {number} id - Id of Plate
 		 */
 		this.id = rect.id;
 		/**
-		 * @member {number} X position of Plate in studs.
+		 * @member {number} x - X position of Plate in studs.
 		 */
 		this.x = rect.x / Globals.BRICKSIZE;
 		/**
-		 * @member {number} Y position of Plate in studs.
+		 * @member {number} y - Y position of Plate in studs.
 		 */
 		this.y = rect.y / Globals.BRICKSIZE;
 		/**
-		 * @member {number} Z-index of Plate
+		 * @member {number} z - Z-index of Plate
 		 */
 		this.z = rect.z;
 		/**
-		 * @member {number} Height of Plate in studs.
+		 * @member {number} height - Height of Plate in studs.
 		 */
 		this.height = rect.height / Globals.BRICKSIZE;
 		/**
-		 * @member {number} Width of Plate in studs.
+		 * @member {number} width - Width of Plate in studs.
 		 */
 		this.width = rect.width / Globals.BRICKSIZE;
 		/**
-		 * @member {String} Color of Plate in hex.
+		 * @member {String} color_id - Color of Plate in hex.
 		 */
-		this.color = rect.color;
+		this.color_id = rect.color_id;
+		this.is_new = false;
+	}
+
+	markAsNew(is_new) {
+		this.is_new = is_new;
 	}
 
 	// Returns this Plate in SVG Rect format (calculates SVG dimensions)
@@ -131,7 +136,7 @@ class Plate {
 			this.z,
 			this.height * Globals.BRICKSIZE,
 			this.width * Globals.BRICKSIZE,
-			this.color);
+			this.color_id);
 	}
 
 	static fromRect(r = null) {
@@ -142,21 +147,44 @@ class Plate {
 			return null;
 		}
 	}
+
+	static fromJSON(data) {
+		let r = new Rect(
+			data.id,
+			data.x * Globals.BRICKSIZE,
+			data.y * Globals.BRICKSIZE,
+			data.z,
+			data.h * Globals.BRICKSIZE,
+			data.w * Globals.BRICKSIZE,
+			data.color.id);
+		return new Plate(r);
+	}
 }
 
 /**
- * Baseplate is collection of Plates that form single Module. Baseplate handles storing the Plates 
+ * Module is collection of Plates that form single Module. Module handles storing the Plates
  */
-class Baseplate {
+class Module {
 	/**
-	 * Creates Baseplate
-	 * @param {onChangeFunction} Function that will be called when there is change in Plates.
+	 * Creates Module
+	 * @param {int} id - Id of the Module
+	 * @param {string} name - Name of the module
+	 * @param {boolean} is_public - Is module public?
+	 * @param {function} onchangefunction - Function that will be called when there is change in Plates.
 	 */
-	constructor(id, onchangefunction = null) {
+	constructor(id, name = '', is_public = true, onchangefunction = null) {
 		/**
-		* @member {Integer} Id of Baseplate
+		* @member {int} id - Id of Module
 		**/
 		this.id = id;
+		/**class Module
+		 * @member {string} name - Name of the module
+		 */
+		this.name = name;
+		/**
+		 * @member {boolean} is_public - Is module public?
+		 */
+		this.is_public = is_public;
 		/**
 		* @member {Map<number,Plate>} Map of Plates
 		*/
@@ -181,7 +209,7 @@ class Baseplate {
 	}
 
 	/**
-	 * Add a Plate to Baseplate's Plate collection
+	 * Add a Plate to Module's Plate collection
 	 * @param {Plate} p Plate to add
 	 */
 	addPlate(p) {
@@ -254,18 +282,41 @@ class Baseplate {
 
 	/**
 	 * Return Iterator that contains all the Plates
-	 * @returns {Iterator<Plate>} Plates contained in this Baseplate
+	 * @returns {Iterator<Plate>} Plates contained in this Module
 	 */
 	getPlates() {
 		return this.plates.values();
 	}
 
 	getCopy() {
-		let copy = new Baseplate(this.id);
+		let copy = new Module(this.id);
 		Array.from(this.plates.values()).forEach(function (p) {
 			copy.addPlate(p);
 		});
 		return copy;
+	}
+
+	static readFromJSON(json_data) {
+		let module = new Module(
+			json_data.id,
+			json_data.name,
+			json_data.public,
+		);
+
+		json_data.plates.forEach(function (pd) {
+			module.addPlate(Plate.fromJSON(pd));
+		});
+		return module;
+	}
+
+	static readSummaryFromJSON(json_data) {
+		let module = new Module(
+			json_data.id,
+			json_data.name,
+			json_data.is_public,
+		);
+
+		return module;
 	}
 }
 

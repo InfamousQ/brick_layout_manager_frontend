@@ -1,15 +1,15 @@
 /*jshint browser: true*/
 /*global App, EventHandler, Globals */
-App.editor = (function () {
+App.module_editor = (function () {
 	"use strict";
-	const Editor = {
+	const ModuleEditor = {
 		activeRectId: 'active',
 		hoverRectId: 'hover-rect',
 		startPoint: null,
 		endPoint: null,
 
 		$hoverrect: null,
-
+	// TODO: Move active module data to this object
 		init: function () {
 			this.$hoverrect = document.getElementById(this.hoverRectId);
 			this.bindEvents();
@@ -18,10 +18,10 @@ App.editor = (function () {
 		},
 
 		bindEvents: function () {
-			EventHandler.listen(EventHandler.VIEW_GRID_CLICK, Editor.onClick.bind(this));
-			EventHandler.listen(EventHandler.VIEW_GRID_MOUSE_IN, Editor.onMouseIn.bind(this));
-			EventHandler.listen(EventHandler.VIEW_GRID_MOUSE_MOVE, Editor.onMouseMove.bind(this));
-			EventHandler.listen(EventHandler.VIEW_GRID_MOUSE_OUT, Editor.onMouseOut.bind(this));
+			EventHandler.listen(EventHandler.VIEW_GRID_CLICK, this.onClick.bind(this));
+			EventHandler.listen(EventHandler.VIEW_GRID_MOUSE_IN, this.onMouseIn.bind(this));
+			EventHandler.listen(EventHandler.VIEW_GRID_MOUSE_MOVE, this.onMouseMove.bind(this));
+			EventHandler.listen(EventHandler.VIEW_GRID_MOUSE_OUT, this.onMouseOut.bind(this));
 			EventHandler.listen(EventHandler.VIEW_GRID_RESET, this.reset.bind(this));
 		},
 
@@ -84,5 +84,5 @@ App.editor = (function () {
 		}
 	};
 
-	return Editor.init();
+	return ModuleEditor.init();
 }());

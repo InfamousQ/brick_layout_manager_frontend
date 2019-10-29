@@ -1,12 +1,12 @@
-#baseplate-edit {
+#module-edit {
 	background-color: bisque;
 }
 
-#baseplate-view {
+#module-view {
 	background-color:gainsboro;
 }
 
-#baseplate-data {
+#module-data {
 	background-color: bisque;
 }
 
@@ -18,11 +18,11 @@
 	display: none;
 }
 
-#baseplate-edit p {
+#module-edit p {
 	display: none;
 }
 
-#baseplate-svg {
+#module-svg {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;

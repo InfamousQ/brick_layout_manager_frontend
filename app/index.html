@@ -13,8 +13,8 @@
 					<ul>
 						<li><a href="#layouts">Layouts</a></li>
 						<li><a href="#layouteditor">Layout editor<span id="layout-editor-active-layout-id"></span></a></li>
-						<li><a href="#list">Modules</a></li>
-						<li><a href="#baseplate">Module editor</a></li>
+						<li><a href="#modulelist">Modules</a></li>
+						<li><a href="#moduleeditor">Module editor</a></li>
 						<li class="on-user-deactive"><a href="#login">Login</a></li>
 						<li class="on-user-active"><a href="#user">User</a></li>
 					</ul>
@@ -32,22 +32,22 @@
 				</div>
 			</div>
 
-			<div id="layout-editor">
+			<div id="layout-editor" class="element">
 				<h1>Editor layout</h1>
 				<p>Layout data will be here</p>
 			</div>
 
-			<div id="baseplate-list" class="element">
-				<h1>List of available baseplates</h1>
-				<ul id="baseplate-collection">
-					<li class="skeleton"><a>Baseplate #<span class="id"></span></a></li>
+			<div id="module-list" class="element">
+				<h1>List of available modules</h1>
+				<ul id="module-collection">
+					<li class="skeleton"><a>module #<span class="id"></span></a></li>
 				</ul>
-				<button id="add-baseplate">Create new Baseplate</button>
+				<button id="add-module">Create new module</button>
 			</div>
 
-			<div id="baseplate-edit" class="element">
-				<div id="baseplate-view">
-					<svg id="baseplate-svg" width="100%" height="100%" xmlns="http://www.w3.org">
+			<div id="module-edit" class="element">
+				<div id="module-view">
+					<svg id="module-svg" width="100%" height="100%" xmlns="http://www.w3.org">
 						<defs>
 							<pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
 								<path d="M 0 0 L 20 0 20 20 0 20 z" stroke="gainsboro" stroke-width="1" fill="silver"></path>
@@ -63,21 +63,28 @@
 						<rect fill="url(#stud)" id="stud-background-rect" x="0" y="0" width="100%" height="100%" />
 					</svg>
 				</div>
-				<div id="baseplate-data">
-					<h1>Baseplate</h1>
-					<p class="edit-baseplate">ID:<span class="id"></span></p>
-					<p class="new-baseplate">New baseplate!</p>
+				<div id="module-data">
+					<h1>module</h1>
+					<p class="edit-module">ID:<span class="id"></span></p>
+					<p class="new-module">New module!</p>
+					<p class="old-module">Old module!</p>
+					<form id="module-form">
+						<label for="module-form-name">Name</label>
+						<input id="module-form-name" type="text" value="" /><br />
+						<label for="module-form-public">Public</label>
+						<input id="module-form-public" type="checkbox" value="is_public" />
+					</form>
 					<fieldset>
 						<legend>Actions</legend>
-						<button id="save-baseplate">Save</button>
-						<button id="delete-baseplate">Delete</button>
+						<button id="save-module">Save</button>
+						<button id="delete-module">Delete</button>
 					</fieldset>
 					<fieldset>
 						<legend>Size</legend>
-						<label for="baseplate-height">Height in bricks:</label>
-						<input id="baseplate-height" name="height" type="number" value="32"/><br />
-						<label for="baseplate-width">Width in bricks:</label>
-						<input id="baseplate-width" name="width" type="number" value="32"/>
+						<label for="module-height">Height in bricks:</label>
+						<input id="module-height" name="height" type="number" value="32"/><br />
+						<label for="module-width">Width in bricks:</label>
+						<input id="module-width" name="width" type="number" value="32"/>
 					</fieldset>
 					<ul id="plate-list">
 						<li class="skeleton">
@@ -145,6 +152,7 @@
 
 		</div>
 		<script type="text/javascript" src="static/js/util/globals.js"></script>
+		<script type="text/javascript" src="static/js/util/errors.js"></script>
 		<script type="text/javascript" src="static/js/util/classes.js"></script>
 		<script type="text/javascript" src="static/js/util/eventhandler.js"></script>
 		<script type="text/javascript" src="static/js/elements/app.js"></script>
@@ -153,10 +161,10 @@
 		<script type="text/javascript" src="static/js/elements/user.js"></script>
 		<script type="text/javascript" src="static/js/elements/layouts.js"></script>
 		<script type="text/javascript" src="static/js/elements/layout-editor.js"></script>
-		<script type="text/javascript" src="static/js/elements/baseplate-list.js"></script>
+		<script type="text/javascript" src="static/js/elements/modules.js"></script>
 		<script type="text/javascript" src="static/js/elements/view.js"></script>
 		<script type="text/javascript" src="static/js/elements/editor.js"></script>
-		<script type="text/javascript" src="static/js/elements/baseplate-view.js"></script>
+		<script type="text/javascript" src="static/js/elements/module-editor.js"></script>
 		<script type="text/javascript" src="static/js/elements/log.js"></script>
 		<script type="text/javascript" src="static/js/util/routing.js"></script>
 	</body>

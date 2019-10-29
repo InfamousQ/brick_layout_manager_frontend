@@ -32,17 +32,11 @@ const Routing = {
 			case 'layouts':
 				this.setAsMainDiv(App.layouts);
 				break;
-			case 'baseplate':
-				const new_baseplate_id = parseInt(hash_params[0], 10);
-				if (App.baseplate_view.allowRouting(new_baseplate_id)) {
-					this.setAsMainDiv(App.baseplate_view);
-					App.baseplate_view.setBaseplate(new_baseplate_id);
-				} else {
-					return false;
-				}
+			case 'moduleeditor':
+				this.setAsMainDiv(App.module_editor);
 				break;
-			case 'list':
-				this.setAsMainDiv(App.baseplate_list);
+			case 'modulelist':
+				this.setAsMainDiv(App.modules);
 				break;
 			case 'login':
 				this.setAsMainDiv(App.login);
