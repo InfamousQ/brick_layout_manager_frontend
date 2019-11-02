@@ -130,6 +130,8 @@ const API = {
 
 	/**
 	 * @param {Module} target_module_data - Module data
+	 * @throws JWTTokenValidationError
+	 * @throws UnauthorizedError
 	 */
 	saveModuleFetch: function(target_module_data) {
 		let db_module = {};
@@ -145,6 +147,7 @@ const API = {
 		});
 
 		return fetch(module_save_api_request)
+			.then(this.handleUnauthorizedModuleSave)
 			.then(this.checkJWTTokenValidity)
 			.then(this.parseResponseJSON)
 			.catch(this.handleJWTTokenValidationError);
@@ -230,5 +233,13 @@ const API = {
 		} else {
 			throw error;
 		}
+	},
+
+	handleUnauthorizedModuleSave: function (response) {
+		if (401 === response.status) {
+			// Active user is not the author for this module, throw UnauthorizedError
+			throw new UnauthorizedError('Active user is not author of target module');
+		}
+		return response;
 	}
 };

@@ -24,7 +24,7 @@
 			<div id="layouts" class="element">
 				<h1>List of available layouts</h1>
 				<div id="list-layouts">
-					<div class="skeleton layout" data-layout-id="">
+					<div class="skeleton layout">
 						<img class="layout-img" src="" alt=""/>
 						<span class="layout-name"></span>
 						<button class="layout-activate">Edit layout</button>
@@ -39,9 +39,14 @@
 
 			<div id="module-list" class="element">
 				<h1>List of available modules</h1>
-				<ul id="module-collection">
-					<li class="skeleton"><a>module #<span class="id"></span></a></li>
-				</ul>
+				<div id="module-collection">
+					<div class="skeleton module">
+						<img class="module-img" src="" alt=""/>
+						<span class="module-name"></span>
+						<span class="module-owner-name"></span>
+						<button class="module-activate" data-module-id="">Edit module</button>
+					</div>
+				</div>
 				<button id="add-module">Create new module</button>
 			</div>
 
@@ -66,6 +71,7 @@
 				<div id="module-data">
 					<h1>module</h1>
 					<p class="edit-module">ID:<span class="id"></span></p>
+					<p>Author's name: <span id="module-author-name"></span></p>
 					<p class="new-module">New module!</p>
 					<p class="old-module">Old module!</p>
 					<form id="module-form">
@@ -145,6 +151,14 @@
 							<img class="layout-img" src="" alt=""/>
 							<span class="layout-name"></span>
 							<button class="layout-activate" data-layout-id="">Edit layout</button>
+						</div>
+					</div>
+					<div id="user-view-modules">
+						Active user's modules:
+						<div class="skeleton module" data-module-id="">
+							<img class="module-img" src="" alt=""/>
+							<span class="module-name"></span>
+							<button class="module-activate" data-module-id="">Edit module</button>
 						</div>
 					</div>
 				</div>
