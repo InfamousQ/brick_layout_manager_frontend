@@ -170,9 +170,10 @@ class Module {
 	 * @param {int} id - Id of the Module
 	 * @param {string} name - Name of the module
 	 * @param {boolean} is_public - Is module public?
+	 * @param {string} author_name - Name of the authoring User
 	 * @param {function} onchangefunction - Function that will be called when there is change in Plates.
 	 */
-	constructor(id, name = '', is_public = true, onchangefunction = null) {
+	constructor(id, name = '', is_public = true, author_name = '', onchangefunction = null) {
 		/**
 		* @member {int} id - Id of Module
 		**/
@@ -185,6 +186,10 @@ class Module {
 		 * @member {boolean} is_public - Is module public?
 		 */
 		this.is_public = is_public;
+		/**
+		 * @member {string} author_name - Name of the author
+		 */
+		this.author_name = author_name;
 		/**
 		* @member {Map<number,Plate>} Map of Plates
 		*/
@@ -301,6 +306,7 @@ class Module {
 			json_data.id,
 			json_data.name,
 			json_data.public,
+			json_data.author.name,
 		);
 
 		json_data.plates.forEach(function (pd) {
@@ -314,6 +320,7 @@ class Module {
 			json_data.id,
 			json_data.name,
 			json_data.is_public,
+			json_data.author.name,
 		);
 
 		return module;

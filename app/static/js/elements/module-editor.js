@@ -6,6 +6,7 @@ App.module_editor = (function () {
 		settings: {
 			mainDiv: 'module-edit',
 			moduleDataElement: 'module-data',
+			$moduleAuthorNamePElement: 'module-author-name',
 			moduleNameInputElement: 'module-form-name',
 			moduleIsPublicInputElement: 'module-form-public',
 			plateListElement: 'plate-list',
@@ -23,11 +24,13 @@ App.module_editor = (function () {
 		// Contains Plates. Index is id of plate
 		active_module_is_new: false,
 		active_module: null,
-		active_module_is_modified: false,
+		// TODO: "active_module_is_editable" requires us to compare active user's id to author user id. Not possible now.
+		// active_module_is_editable: false,
 
 		color_list: {},
 
 		$data: null,
+		$moduleAuthorNameP: null,
 		$moduleNameInput: null,
 		$moduleIsPublicInput: null,
 		$plateList: null,
@@ -38,6 +41,7 @@ App.module_editor = (function () {
 
 		init: function () {
 			this.$data = document.getElementById(this.settings.moduleDataElement);
+			this.$moduleAuthorNameP = document.getElementById(this.settings.$moduleAuthorNamePElement);
 			this.$moduleNameInput = document.getElementById(this.settings.moduleNameInputElement);
 			this.$moduleIsPublicInput = document.getElementById(this.settings.moduleIsPublicInputElement);
 			this.$plateList = document.getElementById(this.settings.plateListElement);
@@ -68,9 +72,6 @@ App.module_editor = (function () {
 
 		initLocalStorage: function() {
 			// LocalStorage initial values
-			if (window.localStorage.getItem(this.storage_key_active_module_is_new) === null) {
-				window.localStorage.setItem(this.storage_key_active_module_is_new, '1'); // Empty or '1'
-			}
 			if (window.localStorage.getItem(this.storage_key_active_module_id) === null) {
 				window.localStorage.setItem(this.storage_key_active_module_id, ''); // Empty or string-casted int
 			}
@@ -149,17 +150,17 @@ App.module_editor = (function () {
 				});
 			}
 
+			// Get module read-only data
+			this.$moduleAuthorNameP.textContent = this.active_module.author_name;
+
 			// Get module data to form
 			this.$moduleNameInput.value = this.active_module.name;
 			this.$moduleIsPublicInput.checked = this.active_module.is_public;
 
-
-			// Reset view and data related to active module
 			EventHandler.emit(EventHandler.VIEW_GRID_RESET, null);
 			Array.from(this.active_module.plates.values()).forEach(function (p) {
 				EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_PLATE, p);
 			});
-			this.active_module_is_modified = false;
 			this.active_module.setOnChangeFunction(this.populatePlateList.bind(this));
 			if (this.active_module.id > 0) {
 				const active_p = this.$data.getElementsByClassName('edit-module')[0];
@@ -189,7 +190,6 @@ App.module_editor = (function () {
 		updateActiveModule: function () {
 			this.active_module.name = this.$moduleNameInput.value;
 			this.active_module.is_public = this.$moduleIsPublicInput.checked;
-			this.markActiveModuleModified();
 		},
 
 		changeSettings: function (event) {
@@ -222,9 +222,6 @@ App.module_editor = (function () {
 			}
 			this.active_module.addPlate(plate);
 			EventHandler.emit(EventHandler.VIEW_GRID_GENERATE_PLATE, plate);
-
-			// Mark module as modified
-			this.markActiveModuleModified();
 		},
 
 
@@ -258,9 +255,6 @@ App.module_editor = (function () {
 
 			// Edit active_modules plate
 			this.active_module.editPlateById(target_plate.id, target_plate);
-
-			// Mark module as modified
-			this.markActiveModuleModified();
 		},
 
 		deleteRect: function (e) {
@@ -279,9 +273,6 @@ App.module_editor = (function () {
 			this.active_module.remotePlateById(plate_id);
 
 			EventHandler.emit(EventHandler.MODULE_VIEW_DELETE_PLATE, plate_id);
-
-			// Mark module as modified
-			this.markActiveModuleModified();
 		},
 
 		toggleEditForm: function (e) {
@@ -311,33 +302,14 @@ App.module_editor = (function () {
 			}
 		},
 
-		markActiveModuleModified: function() {
-			if (this.active_module_is_modified === false) {
-				this.active_module_is_modified = true;
-			}
-		},
-
 		saveActiveModule: function() {
-			if (this.active_module_is_modified === false) {
-				// Currently open module is not modified, save is not necessary
-				return;
-			}
-
 			API.saveModuleFetch(this.active_module)
+				.catch(this.handleUnauthorizedError.bind(this))
 				.then( function (data) {
 					window.alert('Module #' + this.active_module.id + " saved");
-					// Currently open module is modified, save it.
 					EventHandler.emit(EventHandler.MODULES_SAVE_MODULE, this.active_module);
-					console.log(data);
-					this.active_module_is_modified = false;
 				}.bind(this)).then(this.saveActiveModulePlates.bind(this))
-				.then( function(data) {
-					console.log('After all modules and plates');
-					console.log(data);
-				})
-				.catch( function (error) {
-					console.error(error);
-				}).finally( function (data) {
+				.finally( function (data) {
 				// Direct user to saved module's edit view
 				window.location.hash = "moduleeditor";
 				});
@@ -421,6 +393,15 @@ App.module_editor = (function () {
 
 		getColorData: function (color_id) {
 			return this.color_list[color_id];
+		},
+
+		// Promise handling functions
+		handleUnauthorizedError: function (error) {
+			if (error instanceof UnauthorizedError) {
+				EventHandler.emit(EventHandler.ERROR_MSG, 'Unauthorixed edit, cannot edit target module as it is owned by someone else');
+				alert('Unauthorixed edit, cannot edit target module as it is owned by someone else');
+			}
+			throw error;
 		}
 	};
 	return ModuleEditor.init();
