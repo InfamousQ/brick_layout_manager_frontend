@@ -1,3 +1,24 @@
 #module-list {
 	background-color: lightsteelblue;
 }
+
+#list-modules, #list-own-modules {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+	grid-gap: 20px;
+}
+
+#list-modules .module, #list-own-modules .module {
+	display: grid;
+	grid-template-rows: max-content 200px 1fr;
+}
+
+#list-modules .skeleton, #list-own-modules .skeleton {
+	display: none;
+}
+
+#list-modules .module_img, #list-own-modules .module_img {
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+}

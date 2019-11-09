@@ -108,7 +108,7 @@ App.user = (function() {
 				layout_item.classList.remove('skeleton');
 				// Add layout data
 				let layout_icon = layout_item.getElementsByClassName('layout-img')[0];
-				layout_icon.src = layout.img;
+				layout_icon.src = API.API_URL + layout.image_href;
 				layout.alt = layout.name;
 				let layout_name = layout_item.getElementsByClassName('layout-name')[0];
 				layout_name.innerHTML = layout.name;
@@ -123,7 +123,8 @@ App.user = (function() {
 				let module_item = this.$userModulesDiv.getElementsByClassName('skeleton')[0].cloneNode(true);
 				module_item.classList.remove('skeleton');
 				// Add module data
-				// TODO: Module img
+				let module_icon = module_item.getElementsByClassName('module-img')[0];
+				module_icon.src = API.API_URL + module.image_href;
 				let module_name = module_item.getElementsByClassName('module-name')[0];
 				module_name.innerHTML = module.name;
 				let module_activate_button = module_item.getElementsByClassName('module-activate')[0];
