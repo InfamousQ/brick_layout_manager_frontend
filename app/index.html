@@ -22,7 +22,7 @@
 			</div>
 
 			<div id="layouts" class="element">
-				<h1>List of available layouts</h1>
+				<h2>List of available layouts</h2>
 				<div id="list-layouts">
 					<div class="skeleton layout">
 						<img class="layout-img" src="" alt=""/>
@@ -30,17 +30,48 @@
 						<button class="layout-activate">Edit layout</button>
 					</div>
 				</div>
+				<h2>Active user's layouts:</h2>
+				<div id="list-own-layouts">
+					<div class="skeleton layout" data-layout-id="">
+						<img class="layout-img" src="" alt=""/>
+						<span class="layout-name"></span>
+						<button class="layout-activate" data-layout-id="">Edit layout</button>
+					</div>
+				</div>
 			</div>
 
 			<div id="layout-editor" class="element">
-				<h1>Editor layout</h1>
+				<h2>Editor layout</h2>
 				<p>Layout data will be here</p>
+				<form>
+					<fieldset>
+						<label for="layout-name">Layout name:</label>
+						<input type="text" id="layout-name" name="layout-name" /><br />
+						<label for="layout-is-public">Is public:</label>
+						<input type="checkbox" id="layout-is-public" name="layout-is-public" /><br />
+						<p>Created at: <span id="layout-created-at"></span></p>
+					</fieldset>
+					<fieldset>
+						<legend>Actions</legend>
+						<button id="save-layout">Save</button>
+						<button id="delete-layout">Delete</button>
+					</fieldset>
+				</form>
 			</div>
 
 			<div id="module-list" class="element">
-				<h1>List of available modules</h1>
-				<div id="module-collection">
+				<h2>List of available modules</h2>
+				<div id="list-modules">
 					<div class="skeleton module">
+						<img class="module-img" src="" alt=""/>
+						<span class="module-name"></span>
+						<span class="module-owner-name"></span>
+						<button class="module-activate" data-module-id="">Edit module</button>
+					</div>
+				</div>
+				<h2>Active user's modules:</h2>
+				<div id="list-own-modules">
+					<div class="skeleton module" data-module-id="">
 						<img class="module-img" src="" alt=""/>
 						<span class="module-name"></span>
 						<span class="module-owner-name"></span>
@@ -145,16 +176,16 @@
 							</div>
 						</fieldset>
 					</form>
+					Active user's layouts:
 					<div id="user-view-layouts">
-						Active user's layouts:
-						<div class="skeleton layout" data-layout-id="">
+						<div class="layout skeleton" data-layout-id="">
 							<img class="layout-img" src="" alt=""/>
 							<span class="layout-name"></span>
 							<button class="layout-activate" data-layout-id="">Edit layout</button>
 						</div>
 					</div>
+					Active user's modules:
 					<div id="user-view-modules">
-						Active user's modules:
 						<div class="skeleton module" data-module-id="">
 							<img class="module-img" src="" alt=""/>
 							<span class="module-name"></span>

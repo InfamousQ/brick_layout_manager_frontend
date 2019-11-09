@@ -6,11 +6,13 @@ App.modules = (function () {
 		settings: {
 			mainDiv: 'module-list',
 
-			moduleListElement: 'module-collection',
+			publicModulesListElement: 'list-modules',
+			ownModulesListElement: 'list-own-modules',
 			addModuleButtonElement: 'add-module',
 		},
 
-		$moduleList: null,
+		$publicModuleList: null,
+		$ownModuleList: null,
 		$addModuleButton: null,
 
 		bindEvents: function() {
@@ -20,7 +22,8 @@ App.modules = (function () {
 		},
 
 		init: function () {
-			this.$moduleList = document.getElementById(this.settings.moduleListElement);
+			this.$publicModuleList = document.getElementById(this.settings.publicModulesListElement);
+			this.$ownModuleList = document.getElementById(this.settings.ownModulesListElement);
 			this.$addModuleButton = document.getElementById(this.settings.addModuleButtonElement);
 
 			this.bindEvents();
@@ -31,24 +34,32 @@ App.modules = (function () {
 		onActivation: function () {
 			// Fetch public modules from API
 			API.fetchPublicModules()
-				.then(this.renderModules.bind(this))
+				.then(this.renderPublicModules.bind(this))
+				.catch( function (error) {
+					console.error(error);
+				});
+
+			// Fetch public modules from API
+			API.fetchOwnModules()
+				.then(this.renderOwnModules.bind(this))
 				.catch( function (error) {
 					console.error(error);
 				});
 		},
 
-		renderModules: function (module_array) {
+		renderPublicModules: function (module_array) {
 			// Remove existing li-elements excluding the skeleton
-			Array.from(this.$moduleList.querySelectorAll("div:not(.skeleton)")).forEach(function (div) {
+			Array.from(this.$publicModuleList.querySelectorAll("div:not(.skeleton)")).forEach(function (div) {
 				div.remove();
 			});
 
 			// Generate new li-element for each module contained in Storage. li-elements contains link that opens module in edit view.
 			Array.from(module_array).forEach(function (module) {
-				let module_item = this.$moduleList.getElementsByClassName('skeleton')[0].cloneNode(true);
+				let module_item = this.$publicModuleList.getElementsByClassName('skeleton')[0].cloneNode(true);
 				module_item.classList.remove('skeleton');
 				// Add module data
-				// TODO: Module img
+				let module_icon = module_item.getElementsByClassName('module-img')[0];
+				module_icon.src = API.API_URL + module.image_href;
 				let module_name = module_item.getElementsByClassName('module-name')[0];
 				module_name.innerHTML = module.name;
 				let module_owner_name = module_item.getElementsByClassName('module-owner-name')[0];
@@ -56,7 +67,31 @@ App.modules = (function () {
 				let module_activate_button = module_item.getElementsByClassName('module-activate')[0];
 				module_activate_button.setAttribute('data-module-id', module.id);
 				module_activate_button.onclick = this.onActivateModule;
-				this.$moduleList.appendChild(module_item);
+				this.$publicModuleList.appendChild(module_item);
+			}, this);
+		},
+
+		renderOwnModules: function (module_array) {
+			// Remove existing li-elements excluding the skeleton
+			Array.from(this.$ownModuleList.querySelectorAll("div:not(.skeleton)")).forEach(function (div) {
+				div.remove();
+			});
+
+			// Generate new li-element for each module contained in Storage. li-elements contains link that opens module in edit view.
+			Array.from(module_array).forEach(function (module) {
+				let module_item = this.$ownModuleList.getElementsByClassName('skeleton')[0].cloneNode(true);
+				module_item.classList.remove('skeleton');
+				// Add module data
+				let module_icon = module_item.getElementsByClassName('module-img')[0];
+				module_icon.src = API.API_URL + module.image_href;
+				let module_name = module_item.getElementsByClassName('module-name')[0];
+				module_name.innerHTML = module.name;
+				let module_owner_name = module_item.getElementsByClassName('module-owner-name')[0];
+				module_owner_name.innerHTML = module.author.name;
+				let module_activate_button = module_item.getElementsByClassName('module-activate')[0];
+				module_activate_button.setAttribute('data-module-id', module.id);
+				module_activate_button.onclick = this.onActivateModule;
+				this.$ownModuleList.appendChild(module_item);
 			}, this);
 		},
 
